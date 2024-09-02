@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@100..900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+/* Webkit Browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #1D0729;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #E647BF; /* gray-800 */
+    border-radius: 10px;
+    border: 3px solid #1D0729;
+  }
+  
+  /* Firefox */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: #E647BF #1D0729;
+  scroll-behavior: smooth;
+
+  }
+  
+  /* For Edge, IE, and older versions of Firefox */
+  body {
+    -ms-overflow-style: scrollbar;
+  }
+  
+  input[type='number'] {
+    -moz-appearance:textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+@font-face {
+  font-family: RaleWaythin;
+  src: url('../../../public/Raleway-Thin.ttf');
+}
+@font-face {
+  font-family: RaleWayNormal;
+  src: url('../../../public/Raleway-Medium.ttf');
+
+}
+
+
+.headerFont{
+  font-family: 'Catamaran', sans-serif !important;
+
+}
+
+.homeFontThin{
+  font-family: RaleWaythin !important;
+}
+.homeFontNormal{
+  font-family: RaleWayNormal !important;
+}
+
+
+/* Team */
+
+.swiper {
+    height: fit-content;
+}
+
+.swiper .swiper-pagination-bullet-active {
+    background-color: #e647bf;
+}
+.swiper .swiper-button-prev,
+.swiper .swiper-button-next {
+    color: #e647bf;
+}
+
+@media screen and (max-width: 39.25em) {
+    .swiper .swiper-button-prev,
+    .swiper .swiper-button-next {
+        display: none;
+    }
+}
+
+.client {
+    background-image: url('/src/assets/img/testimonials_bg.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.client-Swiper {
+    overflow: hidden !important;
+    width: 49% !important;
+    max-height: 440px;
+}
+
+.client-Swiper .swiper-button-prev:after,
+.client-Swiper .swiper-button-next:after {
+    font-size: 30px !important;
+}
+.swiperSlide {
+    text-align: center;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden !important;
+}
+
+.swiperSlide img {
+    display: block;
+    object-fit: cover;
+}
+
+.client-Swiper .swiper-pagination-fraction, .client-Swiper .swiper-pagination-custom, .client-Swiper .swiper-horizontal > .client-Swiper .swiper-pagination-bullets, .client-Swiper .swiper-pagination-bullets.swiper-pagination-horizontal {
+    bottom: var(--swiper-pagination-bottom, -5px);
+    top: var(--swiper-pagination-top);
+    left: 0;
+    width: 100%;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .client-Swiper {
+        width: 70% !important;
+        min-height: 250px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .client-Swiper {
+        width: 55% !important;
+        max-height: 350px;
+    }
+    .textofintro  {
+        text-align: initial !important;
+    }
+    
+
+}
+
+@media screen and (max-width: 800px) {
+    .client-Swiper {
+        width: 95% !important;
+        max-height: 486px;
+    }
+
+    @media screen and (max-width: 700px) {
+        .client {
+            background-size: cover;
+            height: 480px !important;
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .client-Swiper {
+        width: 100% !important;
+    }
+    .client-Swiper .swiper-pagination-fraction, .client-Swiper .swiper-pagination-custom, .client-Swiper .swiper-horizontal > .client-Swiper .swiper-pagination-bullets, .client-Swiper .swiper-pagination-bullets.swiper-pagination-horizontal {
+        bottom: var(--swiper-pagination-bottom, 0px);
+        top: var(--swiper-pagination-top);
+        left: 0;
+        width: 100%;
+    }
+}
+.placeholder-white::placeholder {
+    color: rgba(226, 226, 226, 0.842) !important;
+  }
+
+
+.bg-picture{
+    background-image: url('/src/assets/img/bg-pic.jfif');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
