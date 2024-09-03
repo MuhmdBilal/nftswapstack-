@@ -3,9 +3,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/mousewheel";
-import nft1 from "../../assets/img/nft1.jfif";
-import nft2 from "../../assets/img/nft2.jfif";
-import nft3 from "../../assets/img/nft3.jfif";
 import Web3 from "web3";
 import {
     rabbitNFTAbi,
@@ -16,11 +13,24 @@ import {
     ERC721ContractAbi,
     ERC721MarketplaceAddress,
 } from "../../utils/contract/marketplaceContract";
+
+import ListModal from "./listModal";
+import { rabbitTokenAddress } from "../../utils/contract/rabbitTokenContract";
+import { toast } from "react-toastify";
+
 export default function Team() {
     const web3 = new Web3(window.ethereum);
     const { walletAddress } = useContext(AuthUserContext);
     const [allNft, setAllNft] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [usdtToken, setUsdtToken] = useState();
+    const [amount, setAmount] = useState("");
+    const [selectedToken, setSelectedToken] = useState("");
+    const [error, setError] = useState(false);
+    const [listNftLoading, setListNftLoading] = useState(false);
+    const [perNftRecord, setPerNftRecord] = useState(null);
+    const [ownerAddress,setOwnerAddress] = useState("");
     const rabbitNFTIntegrateContract = () => {
         const rabbitNFT_Contract = new web3.eth.Contract(
             rabbitNFTAbi,
@@ -41,6 +51,11 @@ export default function Team() {
             const rabbitNFTContract = rabbitNFTIntegrateContract();
             const marketplaceContract = marketplaceIntegrateContract();
             const owner = await rabbitNFTContract.methods.owner().call();
+            setOwnerAddress(owner)
+            const usdtToken = await marketplaceContract.methods
+                .usdtToken()
+                .call();
+            setUsdtToken(usdtToken);
             const walletOfOwner = await rabbitNFTContract.methods
                 .walletOfOwner(owner)
                 .call();
@@ -72,43 +87,75 @@ export default function Team() {
             setLoading(false);
         }
     };
+    const handleListNft = async (mintId) => {
+        try {
+            console.log("11111", mintId);
+            const marketplaceContract = marketplaceIntegrateContract();
+            if (walletAddress) {
+                if (!mintId.sold) {
+                    setOpen(true);
+                    setPerNftRecord(mintId);
+                }else if(ownerAddress === walletAddress){
+                    setListNftLoading(true)
+                  const delistNFT = await marketplaceContract.methods.delistNFT(rabbitNFTAddress,mintId.mintId).send({ from: walletAddress });
+                  if(delistNFT){
+                    toast.success("NFT Delisting Successful!");
+                    setListNftLoading(false);
+                    getNFT();
+                  } 
+                } else{
+                    setListNftLoading(true)
+                  const buyNFT = await marketplaceContract.methods.buyNFT(rabbitNFTAddress,mintId.mintId).send({ from: walletAddress });
+                  if(buyNFT){
+                    toast.success("Buy NFT Successful!");
+                    setListNftLoading(false);
+                    getNFT();
+                  } 
+                }
+            } else {
+                toast.error("Please Wallet Connect First!");
+            }
+        } catch (e) {
+            setListNftLoading(false);
+            console.log("e", e);
+        }
+    };
+    const handleListNFT = async () => {
+        try {
+            if (!amount || !selectedToken) {
+                setError(true);
+                return;
+            }
+            setListNftLoading(true);
+            const marketplaceContract = marketplaceIntegrateContract();
+            const toweiAmount = Web3.utils.toWei(amount, "ether");
+            // console.log("Listing NFT with amount:", toweiAmount, rabbitNFTAddress,selectedToken);
+            const listNFT = await marketplaceContract.methods
+                .listNFT(
+                    rabbitNFTAddress,
+                    perNftRecord.mintId,
+                    toweiAmount,
+                    selectedToken
+                )
+                .send({ from: walletAddress });
+            
+            if (listNFT) {
+                toast.success("NFT Listing Successful!");
+                setOpen(false);
+                setAmount("");
+                setSelectedToken("");
+                setError(false);
+                getNFT();
+            }
+        } catch (e) {
+            console.log("e", e);
+        } finally {
+            setListNftLoading(false);
+        }
+    };
     useEffect(() => {
         getNFT();
     }, []);
-    const nftData = [
-        {
-            id: 1,
-            imgSrc: nft1,
-        },
-        {
-            id: 2,
-            imgSrc: nft2,
-        },
-        {
-            id: 3,
-            imgSrc: nft3,
-        },
-        {
-            id: 4,
-            imgSrc: nft1,
-        },
-        {
-            id: 5,
-            imgSrc: nft2,
-        },
-        {
-            id: 6,
-            imgSrc: nft3,
-        },
-        {
-            id: 7,
-            imgSrc: nft2,
-        },
-        {
-            id: 8,
-            imgSrc: nft3,
-        },
-    ];
 
     return (
         <div className="flex items-center justify-center homeFontNormal">
@@ -158,10 +205,15 @@ export default function Team() {
                                                     alt=""
                                                     className="object-cover transition-transform duration-300 transform  sm:h-[280px] sm:w-[220px] md:h-[300px] lg:w-[260px] lg:h-[320px] w-[300px] h-[300px] md:w-[240px] group-hover:scale-125 "
                                                 />
-                                                <button data-modal-target="select-modal" data-modal-toggle="select-modal" className=" relative z-10 px-4 cursor-pointer font-semibold w-full text-center  py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg">
-                                                   {
-                                                    data.sold ? "Listed" : "List"
-                                                   } 
+                                                <button
+                                                    className=" relative z-10 px-4 cursor-pointer font-semibold w-full text-center  py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg"
+                                                    onClick={() =>
+                                                        handleListNft(data)
+                                                    }
+                                                >
+                                                    {data.sold
+                                                        ? "Listed"
+                                                        : "List"}
                                                 </button>
                                             </div>
                                         </div>
@@ -178,59 +230,20 @@ export default function Team() {
                     )}
                 </div>
             </div>
-            <div id="select-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-md max-h-full">
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    Open positions
-                </h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="select-modal">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
-            </div>
-            <div class="p-4 md:p-5">
-                <p class="text-gray-500 dark:text-gray-400 mb-4">Select your desired position:</p>
-                <ul class="space-y-4 mb-4">
-                    <li>
-                        <input type="radio" id="job-1" name="job" value="job-1" class="hidden peer" required />
-                        <label for="job-1" class="inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-900 hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">                           
-                            <div class="block">
-                                <div class="w-full text-lg font-semibold">UI/UX Engineer</div>
-                                <div class="w-full text-gray-500 dark:text-gray-400">Flowbite</div>
-                            </div>
-                            <svg class="w-4 h-4 ms-3 rtl:rotate-180 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/></svg>
-                        </label>
-                    </li>
-                    <li>
-                        <label for="job-2" class="inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-900 hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">
-                            <div class="block">
-                                <div class="w-full text-lg font-semibold">React Developer</div>
-                                <div class="w-full text-gray-500 dark:text-gray-400">Alphabet</div>
-                            </div>
-                            <svg class="w-4 h-4 ms-3 rtl:rotate-180 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/></svg>
-                        </label>
-                    </li>
-                    <li>
-                        <label for="job-3" class="inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-900 hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">
-                            <div class="block">
-                                <div class="w-full text-lg font-semibold">Full Stack Engineer</div>
-                                <div class="w-full text-gray-500 dark:text-gray-400">Apple</div>
-                            </div>
-                            <svg class="w-4 h-4 ms-3 rtl:rotate-180 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/></svg>
-                        </label>
-                    </li>
-                </ul>
-                <button class="text-white inline-flex w-full justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Next step
-                </button>
-            </div>
-        </div>
-    </div>
-</div> 
+            <ListModal
+                setOpen={setOpen}
+                open={open}
+                usdtToken={usdtToken}
+                rabbitTokenAddress={rabbitTokenAddress}
+                handleListNFT={handleListNFT}
+                amount={amount}
+                setAmount={setAmount}
+                selectedToken={selectedToken}
+                setSelectedToken={setSelectedToken}
+                error={error}
+                setError={setError}
+                listNftLoading={listNftLoading}
+            />
         </div>
     );
 }
