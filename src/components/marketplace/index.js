@@ -15,7 +15,7 @@ import {
 } from "../../utils/contract/marketplaceContract";
 
 import ListModal from "./listModal";
-import { rabbitTokenAddress } from "../../utils/contract/rabbitTokenContract";
+import { rabbitTokenAddress, rabbitTokenAbi } from "../../utils/contract/rabbitTokenContract";
 import { toast } from "react-toastify";
 
 export default function Team() {
@@ -31,6 +31,8 @@ export default function Team() {
     const [listNftLoading, setListNftLoading] = useState(false);
     const [perNftRecord, setPerNftRecord] = useState(null);
     const [ownerAddress,setOwnerAddress] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [nftsPerPage] = useState(100);
     const rabbitNFTIntegrateContract = () => {
         const rabbitNFT_Contract = new web3.eth.Contract(
             rabbitNFTAbi,
@@ -45,30 +47,32 @@ export default function Team() {
         );
         return marketplace_Contract;
     };
+    const rabbitTokenIntegrateContract = () => {
+        const token_Contract = new web3.eth.Contract(
+            rabbitTokenAbi,
+            rabbitTokenAddress
+        );
+        return token_Contract;
+    };
     const getNFT = async () => {
         try {
             setLoading(true);
             const rabbitNFTContract = rabbitNFTIntegrateContract();
             const marketplaceContract = marketplaceIntegrateContract();
             const owner = await rabbitNFTContract.methods.owner().call();
-            setOwnerAddress(owner)
-            const usdtToken = await marketplaceContract.methods
-                .usdtToken()
-                .call();
+            setOwnerAddress(owner);
+            const usdtToken = await marketplaceContract.methods.usdtToken().call();
             setUsdtToken(usdtToken);
-            const walletOfOwner = await rabbitNFTContract.methods
-                .walletOfOwner(owner)
-                .call();
+            const walletOfOwner = await rabbitNFTContract.methods.walletOfOwner(owner).call();
+
             const array = [];
             for (const mintId of walletOfOwner) {
-                const tokenURI = await rabbitNFTContract.methods
-                    .tokenURI(Number(mintId))
-                    .call();
+                const tokenURI = await rabbitNFTContract.methods.tokenURI(Number(mintId)).call();
                 const response = await fetch(tokenURI);
                 const metadata = await response.json();
-                const getListing = await marketplaceContract.methods
-                    .getListing(rabbitNFTAddress, Number(mintId))
-                    .call();
+                const getListing = await marketplaceContract.methods.getListing(rabbitNFTAddress, Number(mintId)).call();
+                // console.log("metadata", metadata, getListing);
+                
                 const object = {
                     image: metadata.image,
                     mintId: Number(mintId),
@@ -78,6 +82,8 @@ export default function Team() {
                     paymentToken: getListing.paymentToken,
                     seller: getListing.seller,
                 };
+                // console.log("object", object.mintId);
+                
                 array.push(object);
             }
             setAllNft(array);
@@ -85,6 +91,25 @@ export default function Team() {
             console.log("e", e);
         } finally {
             setLoading(false);
+        }
+    };
+
+    // Pagination Logic
+    const indexOfLastNFT = currentPage * nftsPerPage;
+    const indexOfFirstNFT = indexOfLastNFT - nftsPerPage;
+    const currentNFTs = allNft.slice(indexOfFirstNFT, indexOfLastNFT);
+
+    const totalPages = Math.ceil(allNft.length / nftsPerPage);
+
+    const nextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const previousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
         }
     };
     const handleListNft = async (mintId) => {
@@ -127,10 +152,16 @@ export default function Team() {
                 return;
             }
             setListNftLoading(true);
+            // console.log("perNftRecord", perNftRecord);
+            
             const marketplaceContract = marketplaceIntegrateContract();
+            const rabbitNFTContract = rabbitNFTIntegrateContract();
+            const rabbitTokenContract = rabbitTokenIntegrateContract()
             const toweiAmount = Web3.utils.toWei(amount, "ether");
-            // console.log("Listing NFT with amount:", toweiAmount, rabbitNFTAddress,selectedToken);
-            const listNFT = await marketplaceContract.methods
+            const approve = await rabbitNFTContract.methods.setApprovalForAll(ERC721MarketplaceAddress,true).send({from : walletAddress})
+            console.log("Listing NFT with amount:", approve);
+            if(approve){
+                const listNFT = await marketplaceContract.methods
                 .listNFT(
                     rabbitNFTAddress,
                     perNftRecord.mintId,
@@ -147,6 +178,8 @@ export default function Team() {
                 setError(false);
                 getNFT();
             }
+            }
+           
         } catch (e) {
             console.log("e", e);
         } finally {
@@ -156,6 +189,7 @@ export default function Team() {
     useEffect(() => {
         getNFT();
     }, []);
+console.log("currentNFTs", currentNFTs);
 
     return (
         <div className="flex items-center justify-center homeFontNormal">
@@ -192,41 +226,57 @@ export default function Team() {
                         </div>
                     ) : (
                         <>
-                            {allNft.length > 0 ? (
-                                <>
-                                    {allNft.map((data, index) => (
-                                        <div
-                                            key={index}
-                                            className="flex flex-col items-center shadow-md  shadow-[#e647bf]/30"
+                        {currentNFTs.length > 0 ? (
+                            currentNFTs.map((data, index) => (
+                                <div
+                                    key={index}
+                                    className="flex flex-col items-center shadow-md shadow-[#e647bf]/30"
+                                >
+                                    <div className="relative bg-[#e647bf]/50 border-[1px] border-[#e647bf]/40 pb-[0%] group overflow-hidden rounded-lg transition-shadow duration-300 ease-in-out ">
+                                        <img
+                                            src={data.image}
+                                            alt=""
+                                            className="object-cover transition-transform duration-300 transform sm:h-[280px] sm:w-[220px] md:h-[300px] lg:w-[260px] lg:h-[320px] w-[300px] h-[300px] md:w-[240px] group-hover:scale-125 "
+                                        />
+                                        <button
+                                            className="relative z-10 px-4 cursor-pointer font-semibold w-full text-center py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg"
+                                            onClick={() => handleListNft(data)}
                                         >
-                                            <div className="relative  bg-[#e647bf]/50 border-[1px] border-[#e647bf]/40  pb-[0%]   group overflow-hidden rounded-lg transition-shadow duration-300 ease-in-out ">
-                                                <img
-                                                    src={data.image}
-                                                    alt=""
-                                                    className="object-cover transition-transform duration-300 transform  sm:h-[280px] sm:w-[220px] md:h-[300px] lg:w-[260px] lg:h-[320px] w-[300px] h-[300px] md:w-[240px] group-hover:scale-125 "
-                                                />
-                                                <button
-                                                    className=" relative z-10 px-4 cursor-pointer font-semibold w-full text-center  py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg"
-                                                    onClick={() =>
-                                                        handleListNft(data)
-                                                    }
-                                                >
-                                                    {data.sold
-                                                        ? "Listed"
-                                                        : "List"}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </>
-                            ) : (
-                                <div className="w-full flex justify-center mt-24 mb-24">
-                                    <div className="text-[24px] text-white/70 font-bold">
-                                        No NFT Found
+                                            {data.sold ? "Listed" : "List"}
+                                        </button>
                                     </div>
                                 </div>
-                            )}
-                        </>
+                            ))
+                        ) : (
+                            <div className="w-full flex justify-center mt-24 mb-24">
+                                <div className="text-[24px] text-white/70 font-bold">
+                                    No NFT Found
+                                </div>
+                            </div>
+                        )}
+                        <div class="w-full flex justify-center">  
+                        <div className="w-1/5 flex justify-between items-center mt-6">
+                            <button
+                                className="px-4 py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg"
+                                onClick={previousPage}
+                                disabled={currentPage === 1}
+                            >
+                                Previous
+                            </button>
+                            <span className="text-white">
+                                Page {currentPage} of {totalPages}
+                            </span>
+                            <button
+                                className="px-4 py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg"
+                                onClick={nextPage}
+                                disabled={currentPage === totalPages}
+                            >
+                                Next
+                            </button>
+                        </div>
+                        </div>
+                        
+                    </>
                     )}
                 </div>
             </div>
