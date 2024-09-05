@@ -93,8 +93,6 @@ export default function Team() {
             setLoading(false);
         }
     };
-
-    // Pagination Logic
     const indexOfLastNFT = currentPage * nftsPerPage;
     const indexOfFirstNFT = indexOfLastNFT - nftsPerPage;
     const currentNFTs = allNft.slice(indexOfFirstNFT, indexOfLastNFT);

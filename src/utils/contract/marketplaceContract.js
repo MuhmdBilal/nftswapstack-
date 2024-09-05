@@ -1,5 +1,5 @@
 export const ERC721MarketplaceAddress =
-    "0x6455c597deDeBdc1810133dCA33d4373D1CF8198";
+    "0x7F1DEF5EfB06390D7d3aA1aA4396DA5012eEA9fF";
 export const ERC721ContractAbi = [
     {
         inputs: [
@@ -201,6 +201,20 @@ export const ERC721ContractAbi = [
             { internalType: "bool", name: "sold", type: "bool" },
             { internalType: "address", name: "paymentToken", type: "address" },
             { internalType: "uint256", name: "timestamp", type: "uint256" },
+            { internalType: "bool", name: "isListed", type: "bool" },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [
+            { internalType: "address", name: "user", type: "address" },
+            { internalType: "address", name: "nftContract", type: "address" },
+        ],
+        name: "getUserListedNFTs",
+        outputs: [
+            { internalType: "address[]", name: "", type: "address[]" },
+            { internalType: "uint256[]", name: "", type: "uint256[]" },
         ],
         stateMutability: "view",
         type: "function",
@@ -230,6 +244,7 @@ export const ERC721ContractAbi = [
             { internalType: "bool", name: "sold", type: "bool" },
             { internalType: "address", name: "paymentToken", type: "address" },
             { internalType: "uint256", name: "timestamp", type: "uint256" },
+            { internalType: "bool", name: "isListed", type: "bool" },
         ],
         stateMutability: "view",
         type: "function",
