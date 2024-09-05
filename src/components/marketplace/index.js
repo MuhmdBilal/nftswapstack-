@@ -71,56 +71,191 @@ export default function Team() {
         return usdt_Contract;
     };
     // const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    const getNFT = async () => {
-        try {
-            setLoading(true);
-            const rabbitNFTContract = rabbitNFTIntegrateContract();
-            const marketplaceContract = marketplaceIntegrateContract();
-            const owner = await rabbitNFTContract.methods.owner().call();
-            setOwnerAddress(owner);
+//     const getNFT = async () => {
+//         try {
+//             setLoading(true);
+//             const rabbitNFTContract = rabbitNFTIntegrateContract();
+//             const marketplaceContract = marketplaceIntegrateContract();
+//             const owner = await rabbitNFTContract.methods.owner().call();
+//             setOwnerAddress(owner);
+// console.log("11111111111");
 
-            const usdtToken = await marketplaceContract.methods
-                .usdtToken()
-                .call();
-            setUsdtToken(usdtToken);
+//             const usdtToken = await marketplaceContract.methods
+//                 .usdtToken()
+//                 .call();
+//             setUsdtToken(usdtToken);
+//             console.log("22222222222222");
+//             const walletOfOwner = await rabbitNFTContract.methods
+//                 .walletOfOwner(owner)
+//                 .call();
+//                 console.log("3333333333333333");
+//             const array = await Promise.all(
+//                 walletOfOwner.map(async (mintId) => {
+//                     console.log("444444444444444");
+//                     const [tokenURI, getListing] = await Promise.all([
+//                         rabbitNFTContract.methods
+//                             .tokenURI(Number(mintId))
+//                             .call(),
+//                         marketplaceContract.methods
+//                             .getListing(rabbitNFTAddress, Number(mintId))
+//                             .call(),
+//                     ]);
+//                     console.log("555555555555555");
+//                     const response = await fetch(tokenURI);
+//                     const metadata = await response.json();
+//                     const price = Number(getListing.price) / 1e18;
+//                     console.log("66666666666666666666666",Number(mintId));
+//                     return {
+//                         image: metadata.image,
+//                         mintId: Number(mintId),
+//                         buyerAddress: getListing.buyer,
+//                         price: Number(getListing.price),
+//                         sold: getListing.sold,
+//                         paymentToken: getListing.paymentToken,
+//                         seller: getListing.seller,
+//                         isListed: getListing.isListed,
+//                         convertPrice: price.toFixed(2),
+//                     };
 
-            const walletOfOwner = await rabbitNFTContract.methods
-                .walletOfOwner(owner)
-                .call();
+//                 })
+//             );
+// console.log("7777777777777777");
+//             setAllNft(array);
+//             setLoading(false);
+//         } catch (e) {
+//             console.log("Error fetching NFTs:", e);
+//             setLoading(false);
+//         } 
+//     };
+// const getNFT = async () => {
+//     try {
+//         setLoading(true);
+//         const rabbitNFTContract = rabbitNFTIntegrateContract();
+//         const marketplaceContract = marketplaceIntegrateContract();
+//         const owner = await rabbitNFTContract.methods.owner().call();
+//         setOwnerAddress(owner);
+        
+//         console.log("Owner address:", owner);
+        
+//         const usdtToken = await marketplaceContract.methods.usdtToken().call();
+//         setUsdtToken(usdtToken);
+        
+//         console.log("USDT Token:", usdtToken);
+        
+//         const walletOfOwner = await rabbitNFTContract.methods.walletOfOwner(owner).call();
+//         console.log("Wallet of Owner:", walletOfOwner);
+        
+//         const array = [];
+        
+//         for (const mintId of walletOfOwner) {
+//             try {
+//                 console.log("Fetching data for mintId:", mintId);
+                
+//                 const tokenURI = await rabbitNFTContract.methods.tokenURI(Number(mintId)).call();
+//                 const getListing = await marketplaceContract.methods.getListing(rabbitNFTAddress, Number(mintId)).call();
 
-            const array = await Promise.all(
-                walletOfOwner.map(async (mintId) => {
-                    const [tokenURI, getListing] = await Promise.all([
-                        rabbitNFTContract.methods
-                            .tokenURI(Number(mintId))
-                            .call(),
-                        marketplaceContract.methods
-                            .getListing(rabbitNFTAddress, Number(mintId))
-                            .call(),
-                    ]);
-                    const response = await fetch(tokenURI);
-                    const metadata = await response.json();
+//                 const response = await fetch(tokenURI);
+//                 const metadata = await response.json();
+                
+//                 const price = Number(getListing.price) / 1e18;
+                
+//                 array.push({
+//                     image: metadata.image,
+//                     mintId: Number(mintId),
+//                     buyerAddress: getListing.buyer,
+//                     price: Number(getListing.price),
+//                     sold: getListing.sold,
+//                     paymentToken: getListing.paymentToken,
+//                     seller: getListing.seller,
+//                     isListed: getListing.isListed,
+//                     convertPrice: price.toFixed(2),
+//                 });
 
-                    return {
-                        image: metadata.image,
-                        mintId: Number(mintId),
-                        buyerAddress: getListing.buyer,
-                        price: Number(getListing.price),
-                        sold: getListing.sold,
-                        paymentToken: getListing.paymentToken,
-                        seller: getListing.seller,
-                        isListed: getListing.isListed,
-                    };
-                })
-            );
+//                 console.log("Fetched data for mintId:", mintId, "Data:", metadata);
+                
+//             } catch (error) {
+//                 console.error(`Error fetching data for mintId ${mintId}:`, error);
+//             }
+//         }
 
-            setAllNft(array);
-        } catch (e) {
-            console.log("Error fetching NFTs:", e);
-        } finally {
-            setLoading(false);
+//         console.log("Final NFT Array:", array);
+//         setAllNft(array);
+        
+//     } catch (e) {
+//         console.log("Error fetching NFTs:", e);
+//     } finally {
+//         setLoading(false);
+//     }
+// };
+const fetchWithLimit = async (items, limit) => {
+    const results = [];
+    const executing = new Set();
+
+    for (const item of items) {
+        const promise = (async () => {
+            const result = await fetchDataForMintId(item);
+            results.push(result);
+        })();
+
+        executing.add(promise);
+        promise.finally(() => executing.delete(promise));
+        if (executing.size >= limit) {
+            await Promise.race(executing);
         }
-    };
+    }
+    await Promise.all(executing);
+    return results;
+};
+
+const fetchDataForMintId = async (mintId) => {
+    try {
+        const rabbitNFTContract = rabbitNFTIntegrateContract();
+            const marketplaceContract = marketplaceIntegrateContract();
+        const tokenURI = await rabbitNFTContract.methods.tokenURI(Number(mintId)).call();
+        const getListing = await marketplaceContract.methods.getListing(rabbitNFTAddress, Number(mintId)).call();
+        const response = await fetch(tokenURI);
+        const metadata = await response.json();
+        const price = Number(getListing.price) / 1e18;
+
+        return {
+            image: metadata.image,
+            mintId: Number(mintId),
+            buyerAddress: getListing.buyer,
+            price: Number(getListing.price),
+            sold: getListing.sold,
+            paymentToken: getListing.paymentToken,
+            seller: getListing.seller,
+            isListed: getListing.isListed,
+            convertPrice: price.toFixed(2),
+        };
+    } catch (error) {
+        console.error(`Error fetching data for mintId ${mintId}:`, error);
+        return null; // Handle error and return null or an alternative object
+    }
+};
+
+const getNFT = async () => {
+    try {
+        setLoading(true);
+        const rabbitNFTContract = rabbitNFTIntegrateContract();
+        const marketplaceContract = marketplaceIntegrateContract();
+        const owner = await rabbitNFTContract.methods.owner().call();
+        setOwnerAddress(owner);
+        
+        const usdtToken = await marketplaceContract.methods.usdtToken().call();
+        setUsdtToken(usdtToken);
+        
+        const walletOfOwner = await rabbitNFTContract.methods.walletOfOwner(owner).call();
+        
+        const nftData = await fetchWithLimit(walletOfOwner, 5); // Adjust limit as needed
+        setAllNft(nftData.filter(item => item !== null)); // Filter out null values
+
+    } catch (e) {
+        console.log("Error fetching NFTs:", e);
+    } finally {
+        setLoading(false);
+    }
+};
 
     const indexOfLastNFT = currentPage * nftsPerPage;
     const indexOfFirstNFT = indexOfLastNFT - nftsPerPage;
@@ -162,39 +297,61 @@ export default function Team() {
                     }
                 } else {
                     if (mintId.paymentToken === BEP40TokenAddress) {
-                        const approve = await usdtToken.methods
-                            .approve(ERC721MarketplaceAddress, mintId.price)
-                            .send({ from: walletAddress });
-                        if (approve) {
-                            const buyNFT = await marketplaceContract.methods
-                                .buyNFT(rabbitNFTAddress, mintId.mintId)
+                        const balanceOf = await usdtToken.methods
+                            .balanceOf(walletAddress)
+                            .call();
+                        console.log("Token balanceOf", balanceOf);
+                        if (Number(balanceOf) > mintId?.price) {
+                            const approve = await usdtToken.methods
+                                .approve(ERC721MarketplaceAddress, mintId.price)
                                 .send({ from: walletAddress });
-                            if (buyNFT) {
-                                toast.success("Buy NFT Successful!");
-                                setTimeout(() => {
-                                    setLoadingMintId(null);
-                                    getNFT();
-                                }, 8000);
+                            if (approve) {
+                                const buyNFT = await marketplaceContract.methods
+                                    .buyNFT(rabbitNFTAddress, mintId.mintId)
+                                    .send({ from: walletAddress });
+                                if (buyNFT) {
+                                    toast.success("Buy NFT Successful!");
+                                    setTimeout(() => {
+                                        setLoadingMintId(null);
+                                        getNFT();
+                                    }, 8000);
+                                }
                             }
+                        } else {
+                            toast.error(
+                                "You have insufficient balance to complete the NFT purchase. Please add funds to your wallet."
+                            );
+                            setLoadingMintId(null);
                         }
                     } else {
-                        const approve = await rabbitTokenContract.methods
-                            .approve(ERC721MarketplaceAddress, mintId.price)
-                            .send({ from: walletAddress });
-                        console.log("approve", approve);
-
-                        if (approve) {
-                            const buyNFT = await marketplaceContract.methods
-                                .buyNFT(rabbitNFTAddress, mintId.mintId)
+                        const balanceOf = await rabbitTokenContract.methods
+                            .balanceOf(walletAddress)
+                            .call();
+                        if (Number(balanceOf) > mintId?.price) {
+                            const approve = await rabbitTokenContract.methods
+                                .approve(ERC721MarketplaceAddress, mintId.price)
                                 .send({ from: walletAddress });
-                            if (buyNFT) {
-                                toast.success("Buy NFT Successful!");
-                                setTimeout(() => {
-                                    setLoadingMintId(null);
-                                    getNFT();
-                                }, 8000);
+                            console.log("approve", approve);
+
+                            if (approve) {
+                                const buyNFT = await marketplaceContract.methods
+                                    .buyNFT(rabbitNFTAddress, mintId.mintId)
+                                    .send({ from: walletAddress });
+                                if (buyNFT) {
+                                    toast.success("Buy NFT Successful!");
+                                    setTimeout(() => {
+                                        setLoadingMintId(null);
+                                        getNFT();
+                                    }, 8000);
+                                }
                             }
+                        } else {
+                            toast.error(
+                                "You have insufficient balance to complete the NFT purchase. Please add funds to your wallet."
+                            );
+                            setLoadingMintId(null);
                         }
+                        console.log("rabbitToken balanceOf", balanceOf);
                     }
                 }
             } else {
