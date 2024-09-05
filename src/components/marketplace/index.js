@@ -289,11 +289,11 @@ const getNFT = async () => {
                         .delistNFT(rabbitNFTAddress, mintId.mintId)
                         .send({ from: walletAddress });
                     if (delistNFT) {
-                        toast.success("NFT Delisting Successful!");
                         setTimeout(() => {
+                            toast.success("NFT Delisting Successful!");
                             setLoadingMintId(null);
                             getNFT();
-                        }, 8000);
+                        }, 4000);
                     }
                 } else {
                     if (mintId.paymentToken === BEP40TokenAddress) {
@@ -310,11 +310,11 @@ const getNFT = async () => {
                                     .buyNFT(rabbitNFTAddress, mintId.mintId)
                                     .send({ from: walletAddress });
                                 if (buyNFT) {
-                                    toast.success("Buy NFT Successful!");
                                     setTimeout(() => {
+                                        toast.success("Buy NFT Successful!");
                                         setLoadingMintId(null);
                                         getNFT();
-                                    }, 8000);
+                                    }, 4000);
                                 }
                             }
                         } else {
@@ -338,11 +338,11 @@ const getNFT = async () => {
                                     .buyNFT(rabbitNFTAddress, mintId.mintId)
                                     .send({ from: walletAddress });
                                 if (buyNFT) {
-                                    toast.success("Buy NFT Successful!");
                                     setTimeout(() => {
+                                        toast.success("Buy NFT Successful!");
                                         setLoadingMintId(null);
                                         getNFT();
-                                    }, 8000);
+                                    }, 4000);
                                 }
                             }
                         } else {
@@ -397,7 +397,7 @@ const getNFT = async () => {
                         toast.success("NFT Listing Successful!");
                         setLoadingMintId(null);
                         setListNftLoading(false);
-                    }, 8000);
+                    }, 4000);
                 }
             }
         } catch (e) {
