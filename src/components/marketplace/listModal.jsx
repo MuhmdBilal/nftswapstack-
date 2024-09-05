@@ -34,34 +34,34 @@ const ListModal = ({
             >
                 <DialogBackdrop
                     transition
-                    className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
+                    className="fixed inset-0 bg-black/60  transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
                 />
 
                 <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                    <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                    <div className="flex items-end justify-center w-full min-h-full p-4 text-center sm:items-center sm:p-0">
                         <DialogPanel
                             transition
-                            className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
+                            className="relative transform overflow-hidden rounded-lg bg-[#2a0b3b] text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 w-[90%] sm:w-[600px] data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
                         >
-                            <div className="bg-white px-4 pb-4 sm:p-6 sm:pb-4">
+                            <div className="px-4 pb-4 bg-[#2a0b3b] text-white pt-4 sm:pt-0 sm:p-6 sm:pb-4">
                                 <div className="sm:flex sm:items-start">
-                                    <div className="text-start sm:ml-4 sm:mt-0 sm:text-left w-full">
+                                    <div className="w-full text-start sm:mt-0 sm:text-left">
                                         <DialogTitle
                                             as="h3"
-                                            className="text-base font-semibold leading-6 text-gray-900"
+                                            className="text-2xl font-bold leading-6 text-center md:text-3xl "
                                         >
                                             List NFT
                                         </DialogTitle>
-                                        <div className="mt-2 w-full">
-                                            <div className="mb-4 w-full">
+                                        <div className="w-full mt-4">
+                                            <div className="w-full mb-4">
                                                 <label
-                                                    className="block text-gray-700 text-sm font-bold mb-2"
+                                                    className="block mb-2 text-sm font-bold text-white/80"
                                                     htmlFor="amount"
                                                 >
                                                     Amount
                                                 </label>
                                                 <input
-                                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                                    className="w-full px-3 py-3 leading-tight border rounded shadow appearance-none text-black/80 focus:outline-none focus:shadow-outline"
                                                     id="amount"
                                                     type="number"
                                                     placeholder="Enter Amount"
@@ -78,15 +78,15 @@ const ListModal = ({
                                                     </span>
                                                 )}
                                             </div>
-                                            <div className="inline-block relative w-full">
+                                            <div className="relative inline-block w-full">
                                                 <label
-                                                    className="block text-gray-700 text-sm font-bold mb-2"
+                                                    className="block mb-2 text-sm font-bold text-white/80"
                                                     htmlFor="paymentToken"
                                                 >
                                                     Select payment Token
                                                 </label>
                                                 <select
-                                                    className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                                                    className="block w-full px-2 py-3 pr-8 leading-tight bg-white border border-gray-400 rounded shadow appearance-none text-black/80 hover:border-gray-500 focus:outline-none focus:shadow-outline"
                                                     value={selectedToken}
                                                     onChange={(e) =>
                                                         setSelectedToken(
@@ -108,9 +108,9 @@ const ListModal = ({
                                                         USDT Token
                                                     </option>
                                                 </select>
-                                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pt-8">
+                                                <div className="absolute inset-y-0 right-0 flex items-center px-2 pt-8 text-gray-700 pointer-events-none">
                                                     <svg
-                                                        className="fill-current h-4 w-4"
+                                                        className="w-4 h-4 fill-current"
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         viewBox="0 0 20 20"
                                                     >
@@ -127,11 +127,11 @@ const ListModal = ({
                                     </div>
                                 </div>
                             </div>
-                            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                            <div className="px-4 py-3 bg-[#2a0b3b] flex flex-col gap-y-3 gap-x-3 sm:flex-row-reverse sm:px-6">
                                 <button
                                     type="button"
                                     onClick={handleListNFT}
-                                    className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3"
+                                    className="flex items-center justify-center py-3  w-full px-3 text-lg font-semibold text-white bg-[#D459B6] rounded-md shadow-sm  hover:bg-[#d84ab4] "
                                     disabled={listNftLoading}
                                 >
                                     {listNftLoading ? (
@@ -162,7 +162,7 @@ const ListModal = ({
                                 <button
                                     type="button"
                                     onClick={closeModal}
-                                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                                    className="flex justify-center w-full px-4 py-3 text-lg font-bold text-gray-900 bg-white rounded-md shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                                 >
                                     Cancel
                                 </button>
