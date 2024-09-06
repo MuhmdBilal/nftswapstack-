@@ -1,5 +1,5 @@
 export const ERC721MarketplaceAddress =
-    "0x7F1DEF5EfB06390D7d3aA1aA4396DA5012eEA9fF";
+    "0xa7d53bcA5B43D1CDfd7943da7c5785b600b719f4";
 export const ERC721ContractAbi = [
     {
         inputs: [
@@ -190,32 +190,11 @@ export const ERC721ContractAbi = [
     },
     {
         inputs: [
-            { internalType: "address", name: "nftContract", type: "address" },
-            { internalType: "uint256", name: "tokenId", type: "uint256" },
-        ],
-        name: "getListing",
-        outputs: [
-            { internalType: "address", name: "seller", type: "address" },
-            { internalType: "uint256", name: "price", type: "uint256" },
-            { internalType: "address", name: "buyer", type: "address" },
-            { internalType: "bool", name: "sold", type: "bool" },
-            { internalType: "address", name: "paymentToken", type: "address" },
-            { internalType: "uint256", name: "timestamp", type: "uint256" },
-            { internalType: "bool", name: "isListed", type: "bool" },
-        ],
-        stateMutability: "view",
-        type: "function",
-    },
-    {
-        inputs: [
             { internalType: "address", name: "user", type: "address" },
             { internalType: "address", name: "nftContract", type: "address" },
         ],
         name: "getUserListedNFTs",
-        outputs: [
-            { internalType: "address[]", name: "", type: "address[]" },
-            { internalType: "uint256[]", name: "", type: "uint256[]" },
-        ],
+        outputs: [{ internalType: "uint256[]", name: "", type: "uint256[]" }],
         stateMutability: "view",
         type: "function",
     },
@@ -346,16 +325,6 @@ export const ERC721ContractAbi = [
         name: "usdtToken",
         outputs: [{ internalType: "address", name: "", type: "address" }],
         stateMutability: "view",
-        type: "function",
-    },
-    {
-        inputs: [
-            { internalType: "address", name: "tokenAddress", type: "address" },
-            { internalType: "address", name: "receiver", type: "address" },
-        ],
-        name: "withdrawTokens",
-        outputs: [],
-        stateMutability: "nonpayable",
         type: "function",
     },
 ];

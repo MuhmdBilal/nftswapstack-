@@ -212,7 +212,7 @@ const fetchDataForMintId = async (mintId) => {
         const rabbitNFTContract = rabbitNFTIntegrateContract();
             const marketplaceContract = marketplaceIntegrateContract();
         const tokenURI = await rabbitNFTContract.methods.tokenURI(Number(mintId)).call();
-        const getListing = await marketplaceContract.methods.getListing(rabbitNFTAddress, Number(mintId)).call();
+        const getListing = await marketplaceContract.methods.listings(rabbitNFTAddress, Number(mintId)).call();
         const response = await fetch(tokenURI);
         const metadata = await response.json();
         const price = Number(getListing.price) / 1e18;
@@ -246,10 +246,14 @@ const getNFT = async () => {
         setUsdtToken(usdtToken);
         
         const walletOfOwner = await rabbitNFTContract.methods.walletOfOwner(owner).call();
+        let nftData = await fetchWithLimit(walletOfOwner, 5); // Adjust limit as needed
         
-        const nftData = await fetchWithLimit(walletOfOwner, 5); // Adjust limit as needed
-        setAllNft(nftData.filter(item => item !== null)); // Filter out null values
-
+        // Sort the fetched NFTs by mintId in ascending order
+        nftData = nftData
+            .filter(item => item !== null) // Filter out null values
+            .sort((a, b) => a.mintId - b.mintId); // Sort by mintId in ascending order
+        
+        setAllNft(nftData);
     } catch (e) {
         console.log("Error fetching NFTs:", e);
     } finally {
@@ -410,7 +414,8 @@ const getNFT = async () => {
     useEffect(() => {
         getNFT();
     }, [walletAddress]);
-
+  console.log("currentNFTs", currentNFTs);
+  
     return (
         <div className="flex items-center justify-center homeFontNormal">
             <div className="overflow-hidden bg-[#1D0729] py-48 flex flex-col items-center justify-center w-full  px-3  ">
