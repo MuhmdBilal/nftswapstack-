@@ -13,12 +13,17 @@ import {
 } from "../../utils/contract/rabbitNFTContract";
 import { AuthUserContext } from "../../context";
 const Header = () => {
-    const web3 = new Web3(window.ethereum);
+    // const web3 = new Web3(window.ethereum);
+    const bscTestnetUrl = "https://data-seed-prebsc-1-s1.binance.org:8545/"; // BSC testnet RPC
+    const web3 = new Web3(new Web3.providers.HttpProvider(bscTestnetUrl));
+
     const [isScroll, setIsScroll] = useState(false);
     const [nav, setnav] = useState(false);
     const { walletAddress } = useContext(AuthUserContext);
     const [isOwner, setIsOwner] = useState(false);
     const { pathname } = useLocation();
+    console.log("walletAddress", walletAddress);
+    
     const rabbitNFTIntegrateContract = () => {
         const rabbitNFT_Contract = new web3.eth.Contract(
             rabbitNFTAbi,
@@ -29,7 +34,11 @@ const Header = () => {
     const ownerCheck = async () => {
         try {
             const rabbitNFTContract = rabbitNFTIntegrateContract();
+            console.log("rabbitNFTContract", rabbitNFTContract);
+            
             const owner = await rabbitNFTContract.methods.owner().call();
+            console.log("owner",  owner);
+            
             if (owner === walletAddress) {
                 setIsOwner(true);
             } else{
@@ -56,6 +65,7 @@ const Header = () => {
         ownerCheck();
     }, [walletAddress]);
     return (
+
         <header className="flex justify-center headerFont">
             <div
                 className={`${

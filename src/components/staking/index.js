@@ -14,7 +14,7 @@ import {
     ERC721MarketplaceAddress,
 } from "../../utils/contract/marketplaceContract";
 
-import ListModal from "./listModal";
+// import ListModal from "./listModal";
 import {
     rabbitTokenAddress,
     rabbitTokenAbi,
@@ -24,8 +24,9 @@ import {
     BEP40TokenAddress,
     EP40TokenAbi,
 } from "../../utils/contract/usdtContract";
+import DetailsModal from "./detailsModal";
 
-export default function Team() {
+export default function Staking() {
     const web3 = new Web3(window.ethereum);
 
     const { walletAddress } = useContext(AuthUserContext);
@@ -42,7 +43,7 @@ export default function Team() {
     const [currentPage, setCurrentPage] = useState(1);
     const [nftsPerPage] = useState(100);
     const [loadingMintId, setLoadingMintId] = useState(null);
-
+    const [openModal,setOpenModal] = useState(true);
     const rabbitNFTIntegrateContract = () => {
         const rabbitNFT_Contract = new web3.eth.Contract(
             rabbitNFTAbi,
@@ -71,123 +72,7 @@ export default function Team() {
         );
         return usdt_Contract;
     };
-    // const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    //     const getNFT = async () => {
-    //         try {
-    //             setLoading(true);
-    //             const rabbitNFTContract = rabbitNFTIntegrateContract();
-    //             const marketplaceContract = marketplaceIntegrateContract();
-    //             const owner = await rabbitNFTContract.methods.owner().call();
-    //             setOwnerAddress(owner);
-    // console.log("11111111111");
-
-    //             const usdtToken = await marketplaceContract.methods
-    //                 .usdtToken()
-    //                 .call();
-    //             setUsdtToken(usdtToken);
-    //             console.log("22222222222222");
-    //             const walletOfOwner = await rabbitNFTContract.methods
-    //                 .walletOfOwner(owner)
-    //                 .call();
-    //                 console.log("3333333333333333");
-    //             const array = await Promise.all(
-    //                 walletOfOwner.map(async (mintId) => {
-    //                     console.log("444444444444444");
-    //                     const [tokenURI, getListing] = await Promise.all([
-    //                         rabbitNFTContract.methods
-    //                             .tokenURI(Number(mintId))
-    //                             .call(),
-    //                         marketplaceContract.methods
-    //                             .getListing(rabbitNFTAddress, Number(mintId))
-    //                             .call(),
-    //                     ]);
-    //                     console.log("555555555555555");
-    //                     const response = await fetch(tokenURI);
-    //                     const metadata = await response.json();
-    //                     const price = Number(getListing.price) / 1e18;
-    //                     console.log("66666666666666666666666",Number(mintId));
-    //                     return {
-    //                         image: metadata.image,
-    //                         mintId: Number(mintId),
-    //                         buyerAddress: getListing.buyer,
-    //                         price: Number(getListing.price),
-    //                         sold: getListing.sold,
-    //                         paymentToken: getListing.paymentToken,
-    //                         seller: getListing.seller,
-    //                         isListed: getListing.isListed,
-    //                         convertPrice: price.toFixed(2),
-    //                     };
-
-    //                 })
-    //             );
-    // console.log("7777777777777777");
-    //             setAllNft(array);
-    //             setLoading(false);
-    //         } catch (e) {
-    //             console.log("Error fetching NFTs:", e);
-    //             setLoading(false);
-    //         }
-    //     };
-    // const getNFT = async () => {
-    //     try {
-    //         setLoading(true);
-    //         const rabbitNFTContract = rabbitNFTIntegrateContract();
-    //         const marketplaceContract = marketplaceIntegrateContract();
-    //         const owner = await rabbitNFTContract.methods.owner().call();
-    //         setOwnerAddress(owner);
-
-    //         console.log("Owner address:", owner);
-
-    //         const usdtToken = await marketplaceContract.methods.usdtToken().call();
-    //         setUsdtToken(usdtToken);
-
-    //         console.log("USDT Token:", usdtToken);
-
-    //         const walletOfOwner = await rabbitNFTContract.methods.walletOfOwner(owner).call();
-    //         console.log("Wallet of Owner:", walletOfOwner);
-
-    //         const array = [];
-
-    //         for (const mintId of walletOfOwner) {
-    //             try {
-    //                 console.log("Fetching data for mintId:", mintId);
-
-    //                 const tokenURI = await rabbitNFTContract.methods.tokenURI(Number(mintId)).call();
-    //                 const getListing = await marketplaceContract.methods.getListing(rabbitNFTAddress, Number(mintId)).call();
-
-    //                 const response = await fetch(tokenURI);
-    //                 const metadata = await response.json();
-
-    //                 const price = Number(getListing.price) / 1e18;
-
-    //                 array.push({
-    //                     image: metadata.image,
-    //                     mintId: Number(mintId),
-    //                     buyerAddress: getListing.buyer,
-    //                     price: Number(getListing.price),
-    //                     sold: getListing.sold,
-    //                     paymentToken: getListing.paymentToken,
-    //                     seller: getListing.seller,
-    //                     isListed: getListing.isListed,
-    //                     convertPrice: price.toFixed(2),
-    //                 });
-
-    //                 console.log("Fetched data for mintId:", mintId, "Data:", metadata);
-
-    //             } catch (error) {
-    //                 console.error(`Error fetching data for mintId ${mintId}:`, error);
-    //             }
-    //         }
-
-    //         console.log("Final NFT Array:", array);
-    //         setAllNft(array);
-
-    //     } catch (e) {
-    //         console.log("Error fetching NFTs:", e);
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
+    
     const fetchWithLimit = async (items, limit) => {
         const results = [];
         const executing = new Set();
@@ -449,7 +334,7 @@ export default function Team() {
         <div className="flex items-center justify-center homeFontNormal">
             <div className="overflow-hidden bg-[#1D0729] py-48 flex flex-col items-center justify-center w-full  px-3  ">
                 <h6 className="text-[26px] sm:text-[32px] md:text-[40px] font-bold capitalize pb-3">
-                    NFTs MarketPlace
+                    NFTs Staking
                 </h6>
 
                 <p className="text-[14px] md:text-[17px] w-[97%] sm:w-[90%] md:w-[85%] lg:w-[70%] xl:w-[65%] pb-6 text-center text-white/70">
@@ -493,10 +378,24 @@ export default function Team() {
                                                 className="object-cover transition-transform duration-300 transform sm:h-[280px] sm:w-[220px] md:h-[300px] lg:w-[260px] lg:h-[320px] w-[300px] h-[300px] md:w-[240px] group-hover:scale-125 "
                                             />
                                             {/* Mint ID box */}
-                                            <div className="absolute top-2 right-2 bg-white border border-gray-300 rounded-lg px-2 py-1 text-md text-gray-800 shadow-md">
-                                                Id: {data.mintId}
+                                            <div className="absolute top-2 right-2 bg-white border border-gray-300 rounded-lg px-2 py-1 text-md text-gray-800 shadow-md flex align-center">
+                                                 Id: {data.mintId}
                                             </div>
-                                            <button
+                                            <div className=" m-2 flex justify-around">
+                                                 <button  className="relative mt-2 w-24 cursor-pointer font-semibold  text-center py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg">
+                                                   Clain 
+                                                 </button>
+                                                 <button  className="relative mt-2 w-24 cursor-pointer font-semibold  text-center py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg">
+                                                   Unstake
+                                                 </button>
+                                                 
+                                            </div>
+                                            <div className=" m-2 flex justify-center">
+                                            <button  className="relative mt-2 w-32 cursor-pointer font-semibold  text-center py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg">
+                                                   see detail
+                                                 </button>
+                                            </div>
+                                            {/* <button
                                                 className="relative z-10 px-4 cursor-pointer font-semibold w-full text-center py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg"
                                                 onClick={() =>
                                                     handleListNft(data)
@@ -536,10 +435,10 @@ export default function Team() {
                                                               data.seller
                                                                 ? "Delist "
                                                                 : " Buy NFT"
-                                                            : "Sell"}
+                                                            : "Stake"}
                                                     </>
                                                 )}
-                                            </button>
+                                            </button> */}
                                         </div>
                                     </div>
                                 ))
@@ -579,7 +478,8 @@ export default function Team() {
                     )}
                 </div>
             </div>
-            <ListModal
+            <DetailsModal openModal={openModal} setOpenModal={setOpenModal}/>
+            {/* <ListModal
                 setOpen={setOpen}
                 open={open}
                 usdtToken={usdtToken}
@@ -592,7 +492,7 @@ export default function Team() {
                 error={error}
                 setError={setError}
                 listNftLoading={listNftLoading}
-            />
+            /> */}
         </div>
     );
 }

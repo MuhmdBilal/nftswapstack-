@@ -1,4 +1,4 @@
-export const rabbitNFTAddress = "0xe7CCe84be3A30EC744Fa4D9781c7DbBa9499Ad5a";
+export const rabbitNFTAddress = "0x41DAABFF56fB6b6B13161597606b49B44110b7D1";
 export const rabbitNFTAbi = [
     { inputs: [], stateMutability: "nonpayable", type: "constructor" },
     {
@@ -187,13 +187,6 @@ export const rabbitNFTAbi = [
     },
     {
         inputs: [],
-        name: "nftPriceInRabbitToken",
-        outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-        stateMutability: "view",
-        type: "function",
-    },
-    {
-        inputs: [],
         name: "owner",
         outputs: [{ internalType: "address", name: "", type: "address" }],
         stateMutability: "view",
@@ -274,19 +267,6 @@ export const rabbitNFTAbi = [
             { internalType: "uint256", name: "_maxSupply", type: "uint256" },
         ],
         name: "setMaxSupply",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-    },
-    {
-        inputs: [
-            {
-                internalType: "uint256",
-                name: "_rabbitTokenPrice",
-                type: "uint256",
-            },
-        ],
-        name: "setMintPrice",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function",

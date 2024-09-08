@@ -3,6 +3,7 @@ import Home from '../components/home/Home';
 import LearnMore from '../components/learnMore';
 import MarketPlace from '../components/marketplace';
 import OwnerMint from '../components/ownerMint';
+import Staking from '../components/staking';
 import WhitePaper from '../components/whitePaper/Index';
 import Login from '../views/Login';
 import Signup from '../views/Signup';
@@ -36,7 +37,7 @@ let routes = [
 	},
 	{
 		path: '/staking',
-		component: MarketPlace,
+		component: Staking,
 		layout: 'main',
 	},
 	{
