@@ -191,10 +191,11 @@ export default function Team() {
     const fetchWithLimit = async (items, limit) => {
         const results = [];
         const executing = new Set();
-
+    
+    
         for (const item of items) {
             const promise = (async () => {
-                const result = await fetchDataForMintId(item);
+                const result = await fetchDataForMintId(Number(item));
                 results.push(result);
             })();
 
@@ -209,9 +210,11 @@ export default function Team() {
     };
 
     const fetchDataForMintId = async (mintId) => {
+        
+        
         try {
             const bscTestnetUrl =
-                "https://data-seed-prebsc-1-s1.binance.org:8545/";
+                "https://bsc-testnet.public.blastapi.io";
             const web3 = new Web3(
                 new Web3.providers.HttpProvider(bscTestnetUrl)
             );
@@ -254,7 +257,7 @@ export default function Team() {
         try {
             setLoading(true);
             const bscTestnetUrl =
-                "https://data-seed-prebsc-1-s1.binance.org:8545/";
+                "https://bsc-testnet.public.blastapi.io";
             const web3 = new Web3(
                 new Web3.providers.HttpProvider(bscTestnetUrl)
             );
@@ -442,8 +445,7 @@ export default function Team() {
     };
     useEffect(() => {
         getNFT();
-    }, [walletAddress]);
-    console.log("currentNFTs", currentNFTs);
+    }, []);
 
     return (
         <div className="flex items-center justify-center homeFontNormal">

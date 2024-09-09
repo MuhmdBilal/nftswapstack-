@@ -1,4 +1,4 @@
-export const rabbitNFTAddress = "0x41DAABFF56fB6b6B13161597606b49B44110b7D1";
+export const rabbitNFTAddress = "0x576BDA518CA2332C61f5BA429daB0CeBc496438A";
 export const rabbitNFTAbi = [
     { inputs: [], stateMutability: "nonpayable", type: "constructor" },
     {
@@ -57,6 +57,31 @@ export const rabbitNFTAbi = [
             {
                 indexed: true,
                 internalType: "address",
+                name: "buyer",
+                type: "address",
+            },
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "tokenId",
+                type: "uint256",
+            },
+            {
+                indexed: false,
+                internalType: "enum RabbitNFT.Rarity",
+                name: "rarity",
+                type: "uint8",
+            },
+        ],
+        name: "MintNFT",
+        type: "event",
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: true,
+                internalType: "address",
                 name: "previousOwner",
                 type: "address",
             },
@@ -68,6 +93,31 @@ export const rabbitNFTAbi = [
             },
         ],
         name: "OwnershipTransferred",
+        type: "event",
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: false,
+                internalType: "enum RabbitNFT.Rarity",
+                name: "rarity",
+                type: "uint8",
+            },
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "startTokenId",
+                type: "uint256",
+            },
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "endTokenId",
+                type: "uint256",
+            },
+        ],
+        name: "RarityRangeUpdated",
         type: "event",
     },
     {
@@ -93,25 +143,6 @@ export const rabbitNFTAbi = [
             },
         ],
         name: "Transfer",
-        type: "event",
-    },
-    {
-        anonymous: false,
-        inputs: [
-            {
-                indexed: true,
-                internalType: "address",
-                name: "buyer",
-                type: "address",
-            },
-            {
-                indexed: false,
-                internalType: "uint256",
-                name: "tokenId",
-                type: "uint256",
-            },
-        ],
-        name: "mintNFT",
         type: "event",
     },
     {
@@ -164,9 +195,14 @@ export const rabbitNFTAbi = [
     },
     {
         inputs: [
+            {
+                internalType: "enum RabbitNFT.Rarity",
+                name: "rarity",
+                type: "uint8",
+            },
             { internalType: "uint256", name: "_quantity", type: "uint256" },
         ],
-        name: "mint",
+        name: "mintNFTs",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function",
@@ -182,6 +218,22 @@ export const rabbitNFTAbi = [
         inputs: [],
         name: "nextOwnerToExplicitlySet",
         outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
+        name: "nftType",
+        outputs: [{ internalType: "string", name: "", type: "string" }],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        name: "nftTypes",
+        outputs: [
+            { internalType: "enum RabbitNFT.Rarity", name: "", type: "uint8" },
+        ],
         stateMutability: "view",
         type: "function",
     },
@@ -211,6 +263,19 @@ export const rabbitNFTAbi = [
         name: "rabbitToken",
         outputs: [
             { internalType: "contract IERC20", name: "", type: "address" },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [
+            { internalType: "enum RabbitNFT.Rarity", name: "", type: "uint8" },
+        ],
+        name: "rarityRanges",
+        outputs: [
+            { internalType: "uint256", name: "startTokenId", type: "uint256" },
+            { internalType: "uint256", name: "endTokenId", type: "uint256" },
+            { internalType: "uint256", name: "currentSupply", type: "uint256" },
         ],
         stateMutability: "view",
         type: "function",
@@ -358,6 +423,21 @@ export const rabbitNFTAbi = [
             { internalType: "address", name: "newOwner", type: "address" },
         ],
         name: "transferOwnership",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "enum RabbitNFT.Rarity",
+                name: "rarity",
+                type: "uint8",
+            },
+            { internalType: "uint256", name: "startTokenId", type: "uint256" },
+            { internalType: "uint256", name: "endTokenId", type: "uint256" },
+        ],
+        name: "updateRarityRange",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function",

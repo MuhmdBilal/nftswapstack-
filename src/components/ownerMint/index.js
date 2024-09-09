@@ -12,6 +12,7 @@ const OwnerMint = () => {
     const { walletAddress } = useContext(AuthUserContext);
     const [errorMessage, setErrorMessage] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [rarity, setRarity] = useState("");
     const web3 = new Web3(window.ethereum);
     const rabbitNFTIntegrateContract = () => {
         const rabbitNFT_Contract = new web3.eth.Contract(
@@ -24,20 +25,21 @@ const OwnerMint = () => {
         e.preventDefault();
         try {
             const rabbitNFTContract = rabbitNFTIntegrateContract();
-            if (!quantity) {
+            if (!quantity || !rarity) {
                 setErrorMessage(true);
                 return;
             }
             if (walletAddress) {
                 setLoading(true);
                 const mint = await rabbitNFTContract.methods
-                    .mint(quantity)
+                    .mintNFTs(rarity, quantity)
                     .send({ from: walletAddress });
-                    console.log("mint", mint);
-                    
+                console.log("mint", mint);
+
                 if (mint) {
                     toast.success("Rabbit NFTs Minted Successfully!");
                     setQuantity("");
+                    setRarity("");
                     setErrorMessage(false);
                 }
             } else {
@@ -55,10 +57,44 @@ const OwnerMint = () => {
                 <div className="flex flex-col items-center justify-center w-full py-10 text-white">
                     <div className="bg-[#1D0729]/90 w-[80%] sm:w-[80%] p-6 rounded-lg shadow-2xl md:w-[450px] lg:w-[450px] mx-2 md:mx-0">
                         <h2 className="mb-8 text-xl font-extrabold text-center md:text-3xl ">
-                            Owner Mint
+                            NFT Type
                         </h2>
                         <form onSubmit={handleSubmit}>
-                            <div className="mb-4">
+                            <div className="relative inline-block w-full">
+                                <label
+                                    className="block mb-2 text-sm font-bold text-white/80"
+                                    htmlFor="paymentToken"
+                                >
+                                    Select NFT Type
+                                </label>
+                                <select
+                                    className="w-full placeholder-white px-3 py-3 text-white bg-[#e647bf]/40 text-sm border-none focus:outline-none rounded"
+                                    value={rarity}
+                                    onChange={(e) => setRarity(e.target.value)}
+                                >
+                                    <option value="" disabled>
+                                        Select payment Token
+                                    </option>
+                                    <option value="1">Rare</option>
+                                    <option value="2">Epic</option>
+                                    <option value="3">Legendary</option>
+                                </select>
+                                <div className="absolute inset-y-0 right-0 flex items-center px-2 pt-8 text-gray-700 pointer-events-none">
+                                    <svg
+                                        className="w-4 h-4 fill-current"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            {errorMessage && !rarity && (
+                                <span className="error-message">
+                                    Please Select NFT Type
+                                </span>
+                            )}
+                            <div className="mb-4 mt-4" >
                                 <label className="block mb-2 text-sm font-bold">
                                     Amount
                                 </label>
@@ -84,7 +120,7 @@ const OwnerMint = () => {
                             <div className="flex items-center justify-center">
                                 <button
                                     type="submit"
-                                    className="flex transition-all duration-300  text-white items-center justify-center w-full px-4 py-[12px] font-semibold rounded   bg-[#e04ebc] hover:bg-[#f137c3] focus:outline-none"
+                                    className="flex transition-all duration-300 mt-2 text-white items-center justify-center w-full px-4 py-[12px] font-semibold rounded   bg-[#e04ebc] hover:bg-[#f137c3] focus:outline-none"
                                     disabled={loading}
                                 >
                                     {loading ? (
