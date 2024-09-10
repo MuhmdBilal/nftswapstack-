@@ -1,14 +1,16 @@
-import React from 'react'
+import React from "react";
 import {
     Dialog,
     DialogBackdrop,
     DialogPanel,
     DialogTitle,
 } from "@headlessui/react";
-const DetailsModal = ({openModal,setOpenModal}) => {
-  return (
-    <div>
-         <Dialog
+const DetailsModal = ({ openModal, setOpenModal, singleNFtDetails }) => {
+    console.log("singleNFtDetails", singleNFtDetails);
+
+    return (
+        <div>
+            <Dialog
                 open={openModal}
                 onClose={() => setOpenModal(true)}
                 className="relative z-10"
@@ -22,25 +24,64 @@ const DetailsModal = ({openModal,setOpenModal}) => {
                     <div className="flex items-end justify-center w-full min-h-full p-4 text-center sm:items-center sm:p-0">
                         <DialogPanel
                             transition
-                            className="relative transform overflow-hidden rounded-lg bg-[#2a0b3b] text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 w-[90%] sm:w-[600px] data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
+                            className="relative transform overflow-hidden rounded-lg bg-[#2a0b3b] text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 w-[90%] sm:w-[750px] data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
                         >
-                            <div className="px-4 pb-4 bg-[#2a0b3b] text-white pt-4 sm:pt-0 sm:p-6 sm:pb-4">
+                            <div className="px-4 bg-[#2a0b3b] text-white pt-4 sm:pt-0 sm:p-6 sm:pb-1">
                                 <div className="sm:flex sm:items-start">
                                     <div className="w-full text-start sm:mt-0 sm:text-left">
                                         <DialogTitle
                                             as="h3"
                                             className="text-2xl font-bold leading-6 text-center md:text-3xl "
                                         >
-                                            List NFT
+                                            Staked NFT Details
                                         </DialogTitle>
-                                        <div className="w-full mt-4">
-                                            <div className="w-full mb-4">
-                                               
+                                        <div className="w-full mt-4  flex">
+                                            <div className="w-5/12 mb-4 ">
+                                                <img
+                                                    src={
+                                                        singleNFtDetails?.image
+                                                    }
+                                                    alt="nftImage"
+                                                />
                                             </div>
-                                            <div className="relative inline-block w-full">
-                                                
+                                            <div className="w-7/12  m-3">
+                                                <div className=" flex justify-between align-center">
+                                                    <span className="text-lg font-bold">
+                                                        NFT Id
+                                                    </span>
+                                                    <span>{singleNFtDetails?.mintId}</span>
+                                                </div>
+                                                <div className="flex justify-center mt-3">
+                                                    <div className="border-b w-full"></div>
+                                                </div>
+                                                <div className=" mt-3 flex justify-between align-center">
+                                                    <span className="text-lg font-bold">
+                                                        Claim Reward
+                                                    </span>
+                                                    <span>{singleNFtDetails?.stakedData?.rewardsClaimed}</span>
+                                                </div>
+                                                <div className="flex justify-center mt-3">
+                                                    <div className="border-b w-full"></div>
+                                                </div>
+                                                <div className=" mt-3 flex justify-between align-center">
+                                                    <span className="text-lg font-bold">
+                                                        Stake Time
+                                                    </span>
+                                                    <span>{singleNFtDetails?.stakedData?.stakeTime}</span>
+                                                </div>
+                                                <div className="flex justify-center mt-3">
+                                                    <div className="border-b w-full"></div>
+                                                </div>
+                                                <div className=" mt-3 flex justify-between align-center">
+                                                    <span className="text-lg font-bold">
+                                                        NFT Type
+                                                    </span>
+                                                    <span>{singleNFtDetails?.stakedData?.stakeTime === 1 ? "Rare" : singleNFtDetails?.stakedData?.stakeTime === 2 ? "Epic" : "Legendary"}</span>
+                                                </div>
+                                                <div className="flex justify-center mt-3">
+                                                    <div className="border-b w-full"></div>
+                                                </div>
                                             </div>
-                                           
                                         </div>
                                     </div>
                                 </div>
@@ -79,7 +120,7 @@ const DetailsModal = ({openModal,setOpenModal}) => {
                                 </button> */}
                                 <button
                                     type="button"
-                                    onClick={()=>setOpenModal(false)}
+                                    onClick={() => setOpenModal(false)}
                                     className="flex justify-center w-full px-4 py-3 text-lg font-bold text-gray-900 bg-white rounded-md shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                                 >
                                     Cancel
@@ -89,8 +130,8 @@ const DetailsModal = ({openModal,setOpenModal}) => {
                     </div>
                 </div>
             </Dialog>
-    </div>
-  )
-}
+        </div>
+    );
+};
 
-export default DetailsModal
+export default DetailsModal;

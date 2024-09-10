@@ -304,6 +304,7 @@ export default function Staking() {
     };
     const handleDetails = (data)=>{
         setOpenModal(true)
+        setSingleNftDetails(data)
     }
     useEffect(() => {
         getNFT();
@@ -549,7 +550,7 @@ export default function Staking() {
                     )}
                 </div>
             </div>
-            <DetailsModal openModal={openModal} setOpenModal={setOpenModal} />
+            <DetailsModal openModal={openModal} setOpenModal={setOpenModal} singleNFtDetails={singleNFtDetails}/>
             {/* <ListModal
                 setOpen={setOpen}
                 open={open}
