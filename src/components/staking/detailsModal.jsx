@@ -6,7 +6,6 @@ import {
     DialogTitle,
 } from "@headlessui/react";
 const DetailsModal = ({ openModal, setOpenModal, singleNFtDetails }) => {
-    console.log("singleNFtDetails", singleNFtDetails);
 
     return (
         <div>
@@ -58,7 +57,7 @@ const DetailsModal = ({ openModal, setOpenModal, singleNFtDetails }) => {
                                                     <span className="text-lg font-bold">
                                                         Claim Reward
                                                     </span>
-                                                    <span>{singleNFtDetails?.stakedData?.rewardsClaimed}</span>
+                                                    <span>{singleNFtDetails?.stakedData?.rewardsClaimed ? singleNFtDetails?.stakedData?.rewardsClaimed: " -"} RBT</span>
                                                 </div>
                                                 <div className="flex justify-center mt-3">
                                                     <div className="border-b w-full"></div>
@@ -67,7 +66,7 @@ const DetailsModal = ({ openModal, setOpenModal, singleNFtDetails }) => {
                                                     <span className="text-lg font-bold">
                                                         Stake Time
                                                     </span>
-                                                    <span>{singleNFtDetails?.stakedData?.stakeTime}</span>
+                                                    <span>{singleNFtDetails?.stakedData?.stakeTime ? singleNFtDetails?.stakedData?.stakeTime : "-"}</span>
                                                 </div>
                                                 <div className="flex justify-center mt-3">
                                                     <div className="border-b w-full"></div>

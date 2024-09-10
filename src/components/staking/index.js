@@ -127,8 +127,6 @@ export default function Staking() {
                 .isStaked(Number(mintId))
                 .call();
             const stakedNFTs = await rabbitStakingNFTContract.methods.getStakedNFTs(walletAddress).call();
-    
-            console.log("stakedNFTs", stakedNFTs);
             const stakedNFT = stakedNFTs.find(nft => nft.tokenId.toString() === mintId.toString());
              let converCLaim ;
              let formattedStakeTime = null;
@@ -136,9 +134,9 @@ export default function Staking() {
                 converCLaim = Number(stakedNFT.rewardsClaimed) / 1e18;
                 const stakeTimeInSeconds = Number(stakedNFT.stakeTime);
                 formattedStakeTime = new Date(stakeTimeInSeconds * 1000).toLocaleString(); 
-                console.log("Matching staked NFT found:", stakedNFT);
+                // console.log("Matching staked NFT found:", stakedNFT);
             } else {
-                console.log("No matching staked NFT found for mintId:", mintId);
+                // console.log("No matching staked NFT found for mintId:", mintId);
             }
     
             const response = await fetch(tokenURI);
@@ -309,7 +307,6 @@ export default function Staking() {
     useEffect(() => {
         getNFT();
     }, [walletAddress]);
-    console.log("currentNFTs", currentNFTs);
 
     return (
         <div className="flex items-center justify-center homeFontNormal">
@@ -322,7 +319,7 @@ export default function Staking() {
                     Each NFT offers different reward rates, with rarer NFTs
                     providing higher rewards.
                 </p>
-                <div className="flex  w-full flex-wrap items-center justify-around px-2 py-6 bg-[#e647bf]/10 rounded-lg gap-x-5 gap-y-16 flex-row">
+                <div className="flex  w-full flex-wrap items-center justify-md-start justify-center px-2 py-6 bg-[#e647bf]/10 rounded-lg gap-x-5 gap-y-16 flex-row">
                     {walletAddress ? (
                         <>
                             {loading ? (
@@ -354,11 +351,11 @@ export default function Staking() {
                                                 key={index}
                                                 className="flex flex-col items-center shadow-md shadow-[#e647bf]/30"
                                             >
-                                                <div className="relative bg-[#e647bf]/50 border-[1px] border-[#e647bf]/40 pb-[0%] group overflow-hidden rounded-lg transition-shadow duration-300 ease-in-out ">
+                                                <div className="relative h-[410px] bg-[#e647bf]/50 border-[1px] border-[#e647bf]/40 pb-[0%] group overflow-hidden rounded-lg transition-shadow duration-300 ease-in-out ">
                                                     <img
                                                         src={data.image}
                                                         alt=""
-                                                        className="object-cover transition-transform duration-300 transform sm:h-[280px] sm:w-[220px] md:h-[300px] lg:w-[260px] lg:h-[320px] w-[300px] h-[300px] md:w-[240px] group-hover:scale-125 "
+                                                        className="object-cover transition-transform duration-300 transform sm:h-[280px] sm:w-[220px] md:h-[300px] lg:w-[260px] lg:h-[300px] w-[300px] h-[300px] md:w-[240px] group-hover:scale-125 "
                                                     />
                                                     {/* Mint ID box */}
                                                     <div className="absolute top-2 right-2 bg-white border border-gray-300 rounded-lg px-2 py-1 text-md text-gray-800 shadow-md flex align-center">
@@ -368,7 +365,7 @@ export default function Staking() {
                                                         <>
                                                             <div className=" m-2 flex justify-around">
                                                                 <button
-                                                                    className="relative mt-2 w-28 cursor-pointer font-semibold  text-center py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg"
+                                                                    className="relative  w-28 cursor-pointer font-semibold  text-center py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg"
                                                                     onClick={() =>
                                                                         handleClaim(
                                                                             data
@@ -409,7 +406,7 @@ export default function Staking() {
                                                                     )}
                                                                 </button>
                                                                 <button
-                                                                    className="relative mt-2 w-28 cursor-pointer font-semibold  text-center py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg"
+                                                                    className="relative  w-28 cursor-pointer font-semibold  text-center py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg"
                                                                     onClick={() =>
                                                                         handleUnstaked(
                                                                             data
@@ -451,7 +448,7 @@ export default function Staking() {
                                                                 </button>
                                                             </div>
                                                             <div className=" m-2 flex justify-center">
-                                                                <button className="relative mt-2 w-32 cursor-pointer font-semibold  text-center py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg" 
+                                                                <button className="relative w-32 cursor-pointer font-semibold  text-center py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg" 
                                                                 onClick={()=>handleDetails(data)}
                                                                 >
                                                                     see detail
@@ -459,8 +456,9 @@ export default function Staking() {
                                                             </div>
                                                         </>
                                                     ) : (
+                                                        <div className="m-4">
                                                         <button
-                                                            className="relative z-10 px-4 cursor-pointer font-semibold w-full text-center py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg"
+                                                            className="relative mt-2 cursor-pointer font-semibold w-full text-center py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg"
                                                             onClick={() =>
                                                                 handleStakeNft(
                                                                     data
@@ -498,6 +496,7 @@ export default function Staking() {
                                                                 <>Stake</>
                                                             )}
                                                         </button>
+                                                        </div>
                                                     )}
                                                 </div>
                                             </div>
@@ -510,31 +509,28 @@ export default function Staking() {
                                         </div>
                                     )}
                                     {currentNFTs.length > 0 && (
-                                        <div class="w-full flex justify-center">
-                                            <div className="w-1/5 flex justify-between items-center mt-6">
-                                                <button
-                                                    className="px-4 py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg"
-                                                    onClick={previousPage}
-                                                    disabled={currentPage === 1}
-                                                >
-                                                    Previous
-                                                </button>
-                                                <span className="text-white">
-                                                    Page {currentPage} of{" "}
-                                                    {totalPages}
-                                                </span>
-                                                <button
-                                                    className="px-4 py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg"
-                                                    onClick={nextPage}
-                                                    disabled={
-                                                        currentPage ===
-                                                        totalPages
-                                                    }
-                                                >
-                                                    Next
-                                                </button>
-                                            </div>
-                                        </div>
+                                       <div className="w-full flex justify-center">
+                                       <div className="w-full md:w-1/5 flex justify-between items-center mt-6">
+                                           <button
+                                               className="px-2 py-1 md:px-4 md:py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg text-sm md:text-base"
+                                               onClick={previousPage}
+                                               disabled={currentPage === 1}
+                                           >
+                                               Previous
+                                           </button>
+                                           <span className="text-white text-sm md:text-base">
+                                               Page {currentPage} of {totalPages}
+                                           </span>
+                                           <button
+                                               className="px-2 py-1 md:px-4 md:py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg text-sm md:text-base"
+                                               onClick={nextPage}
+                                               disabled={currentPage === totalPages}
+                                           >
+                                               Next
+                                           </button>
+                                       </div>
+                                   </div>
+                                   
                                     )}
                                 </>
                             )}
@@ -551,20 +547,7 @@ export default function Staking() {
                 </div>
             </div>
             <DetailsModal openModal={openModal} setOpenModal={setOpenModal} singleNFtDetails={singleNFtDetails}/>
-            {/* <ListModal
-                setOpen={setOpen}
-                open={open}
-                usdtToken={usdtToken}
-                rabbitTokenAddress={rabbitTokenAddress}
-                handleListNFT={handleListNFT}
-                amount={amount}
-                setAmount={setAmount}
-                selectedToken={selectedToken}
-                setSelectedToken={setSelectedToken}
-                error={error}
-                setError={setError}
-                listNftLoading={listNftLoading}
-            /> */}
+            
         </div>
     );
 }

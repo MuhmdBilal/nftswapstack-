@@ -31,7 +31,7 @@ export default function Hero() {
           <div className="flex flex-col gap-y-2 sm:flex-row  px-2 w-full sm:w-auto items-center gap-x-[5px] sm:gap-x-2 ">
             
           {/* <Link to={"/"} className='w-full sm:w-auto'> */}
-            <a href="https://pancakeswap.finance/swap?outputCurrency=0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82&inputCurrency=BNB" target="_blank" style={{textDecoration: "none"}} className=" px-4  w-full sm:w-auto md:px-3 text-[12px] md:text-sm border-[1px] border-[white]/30 rounded-lg py-2  md:py-[13px]  transition-all duration-300 text-white font-semibold bg-[#d140ad]/10 hover:bg-[#e647bf]/30 ">
+            <a href="https://pancakeswap.finance/swap?outputCurrency=0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82&inputCurrency=BNB" target="_blank" style={{textDecoration: "none"}} className=" px-4  w-full sm:w-auto md:px-3 text-[12px] md:text-sm border-[1px] border-[white]/30 rounded-lg py-2  md:py-[13px] text-center transition-all duration-300 text-white font-semibold bg-[#d140ad]/10 hover:bg-[#e647bf]/30 ">
               Buy The Rabbits
             </a>
           {/* </Link> */}

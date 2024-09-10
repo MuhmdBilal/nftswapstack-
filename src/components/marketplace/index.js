@@ -71,123 +71,7 @@ export default function Team() {
         );
         return usdt_Contract;
     };
-    // const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    //     const getNFT = async () => {
-    //         try {
-    //             setLoading(true);
-    //             const rabbitNFTContract = rabbitNFTIntegrateContract();
-    //             const marketplaceContract = marketplaceIntegrateContract();
-    //             const owner = await rabbitNFTContract.methods.owner().call();
-    //             setOwnerAddress(owner);
-    // console.log("11111111111");
-
-    //             const usdtToken = await marketplaceContract.methods
-    //                 .usdtToken()
-    //                 .call();
-    //             setUsdtToken(usdtToken);
-    //             console.log("22222222222222");
-    //             const walletOfOwner = await rabbitNFTContract.methods
-    //                 .walletOfOwner(owner)
-    //                 .call();
-    //                 console.log("3333333333333333");
-    //             const array = await Promise.all(
-    //                 walletOfOwner.map(async (mintId) => {
-    //                     console.log("444444444444444");
-    //                     const [tokenURI, getListing] = await Promise.all([
-    //                         rabbitNFTContract.methods
-    //                             .tokenURI(Number(mintId))
-    //                             .call(),
-    //                         marketplaceContract.methods
-    //                             .getListing(rabbitNFTAddress, Number(mintId))
-    //                             .call(),
-    //                     ]);
-    //                     console.log("555555555555555");
-    //                     const response = await fetch(tokenURI);
-    //                     const metadata = await response.json();
-    //                     const price = Number(getListing.price) / 1e18;
-    //                     console.log("66666666666666666666666",Number(mintId));
-    //                     return {
-    //                         image: metadata.image,
-    //                         mintId: Number(mintId),
-    //                         buyerAddress: getListing.buyer,
-    //                         price: Number(getListing.price),
-    //                         sold: getListing.sold,
-    //                         paymentToken: getListing.paymentToken,
-    //                         seller: getListing.seller,
-    //                         isListed: getListing.isListed,
-    //                         convertPrice: price.toFixed(2),
-    //                     };
-
-    //                 })
-    //             );
-    // console.log("7777777777777777");
-    //             setAllNft(array);
-    //             setLoading(false);
-    //         } catch (e) {
-    //             console.log("Error fetching NFTs:", e);
-    //             setLoading(false);
-    //         }
-    //     };
-    // const getNFT = async () => {
-    //     try {
-    //         setLoading(true);
-    //         const rabbitNFTContract = rabbitNFTIntegrateContract();
-    //         const marketplaceContract = marketplaceIntegrateContract();
-    //         const owner = await rabbitNFTContract.methods.owner().call();
-    //         setOwnerAddress(owner);
-
-    //         console.log("Owner address:", owner);
-
-    //         const usdtToken = await marketplaceContract.methods.usdtToken().call();
-    //         setUsdtToken(usdtToken);
-
-    //         console.log("USDT Token:", usdtToken);
-
-    //         const walletOfOwner = await rabbitNFTContract.methods.walletOfOwner(owner).call();
-    //         console.log("Wallet of Owner:", walletOfOwner);
-
-    //         const array = [];
-
-    //         for (const mintId of walletOfOwner) {
-    //             try {
-    //                 console.log("Fetching data for mintId:", mintId);
-
-    //                 const tokenURI = await rabbitNFTContract.methods.tokenURI(Number(mintId)).call();
-    //                 const getListing = await marketplaceContract.methods.getListing(rabbitNFTAddress, Number(mintId)).call();
-
-    //                 const response = await fetch(tokenURI);
-    //                 const metadata = await response.json();
-
-    //                 const price = Number(getListing.price) / 1e18;
-
-    //                 array.push({
-    //                     image: metadata.image,
-    //                     mintId: Number(mintId),
-    //                     buyerAddress: getListing.buyer,
-    //                     price: Number(getListing.price),
-    //                     sold: getListing.sold,
-    //                     paymentToken: getListing.paymentToken,
-    //                     seller: getListing.seller,
-    //                     isListed: getListing.isListed,
-    //                     convertPrice: price.toFixed(2),
-    //                 });
-
-    //                 console.log("Fetched data for mintId:", mintId, "Data:", metadata);
-
-    //             } catch (error) {
-    //                 console.error(`Error fetching data for mintId ${mintId}:`, error);
-    //             }
-    //         }
-
-    //         console.log("Final NFT Array:", array);
-    //         setAllNft(array);
-
-    //     } catch (e) {
-    //         console.log("Error fetching NFTs:", e);
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
+    
     const fetchWithLimit = async (items, limit) => {
         const results = [];
         const executing = new Set();
@@ -336,7 +220,6 @@ export default function Team() {
                         const balanceOf = await usdtToken.methods
                             .balanceOf(walletAddress)
                             .call();
-                        console.log("Token balanceOf", balanceOf);
                         if (Number(balanceOf) > mintId?.price) {
                             const approve = await usdtToken.methods
                                 .approve(ERC721MarketplaceAddress, mintId.price)
@@ -367,7 +250,6 @@ export default function Team() {
                             const approve = await rabbitTokenContract.methods
                                 .approve(ERC721MarketplaceAddress, mintId.price)
                                 .send({ from: walletAddress });
-                            console.log("approve", approve);
 
                             if (approve) {
                                 const buyNFT = await marketplaceContract.methods
@@ -387,7 +269,6 @@ export default function Team() {
                             );
                             setLoadingMintId(null);
                         }
-                        console.log("rabbitToken balanceOf", balanceOf);
                     }
                 }
             } else {
@@ -458,7 +339,7 @@ export default function Team() {
                     Each NFT offers different reward rates, with rarer NFTs
                     providing higher rewards.
                 </p>
-                <div className="flex  w-full flex-wrap items-center justify-around px-2 py-6 bg-[#e647bf]/10 rounded-lg gap-x-5 gap-y-16 flex-row">
+                <div className="flex  w-full flex-wrap items-center justify-center px-2 py-6 bg-[#e647bf]/10 rounded-lg gap-x-5 gap-y-16 flex-row">
                     {loading ? (
                         <div className="w-full flex justify-center mt-24 mb-24">
                             <div role="status">
@@ -553,29 +434,27 @@ export default function Team() {
                                 </div>
                             )}
                             {currentNFTs.length > 0 && (
-                                <div class="w-full flex justify-center">
-                                    <div className="w-1/5 flex justify-between items-center mt-6">
-                                        <button
-                                            className="px-4 py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg"
-                                            onClick={previousPage}
-                                            disabled={currentPage === 1}
-                                        >
-                                            Previous
-                                        </button>
-                                        <span className="text-white">
-                                            Page {currentPage} of {totalPages}
-                                        </span>
-                                        <button
-                                            className="px-4 py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg"
-                                            onClick={nextPage}
-                                            disabled={
-                                                currentPage === totalPages
-                                            }
-                                        >
-                                            Next
-                                        </button>
-                                    </div>
-                                </div>
+                                  <div className="w-full flex justify-center">
+                                  <div className="w-full md:w-1/5 flex justify-between items-center mt-6">
+                                      <button
+                                          className="px-2 py-1 md:px-4 md:py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg text-sm md:text-base"
+                                          onClick={previousPage}
+                                          disabled={currentPage === 1}
+                                      >
+                                          Previous
+                                      </button>
+                                      <span className="text-white text-sm md:text-base">
+                                          Page {currentPage} of {totalPages}
+                                      </span>
+                                      <button
+                                          className="px-2 py-1 md:px-4 md:py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg text-sm md:text-base"
+                                          onClick={nextPage}
+                                          disabled={currentPage === totalPages}
+                                      >
+                                          Next
+                                      </button>
+                                  </div>
+                              </div>
                             )}
                         </>
                     )}
