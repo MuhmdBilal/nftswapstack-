@@ -50,6 +50,7 @@ export default function Staking() {
     const [unstakeLoading, setInstakeLoading] = useState(null);
     const [claimLoading, setClaimLoading] = useState(null);
     const [openModal, setOpenModal] = useState(false);
+    const [singleNFtDetails,setSingleNftDetails] = useState(null);
     const rabbitStakingNFTIntegrateContract = () => {
         const rabbitStakingNFT_Contract = new web3.eth.Contract(
             NFTStakingAbi,
@@ -105,7 +106,6 @@ export default function Staking() {
         await Promise.all(executing);
         return results;
     };
-
     const fetchDataForMintId = async (mintId) => {
         try {
             const bscTestnetUrl = "https://bsc-testnet.public.blastapi.io";
@@ -118,37 +118,51 @@ export default function Staking() {
             );
             const rabbitStakingNFTContract =
                 rabbitStakingNFTIntegrateContract();
+    
+            // Fetch the tokenURI
             const tokenURI = await rabbitNFT_Contract.methods
                 .tokenURI(Number(mintId))
                 .call();
-
             const isStaked = await rabbitStakingNFTContract.methods
                 .isStaked(Number(mintId))
                 .call();
-            // const stakedNFTs = await rabbitStakingNFTContract.methods.stakedNFTs(walletAddress, Number(mintId)).call()
-            // console.log("stakedNFTs", stakedNFTs);
-
+            const stakedNFTs = await rabbitStakingNFTContract.methods.getStakedNFTs(walletAddress).call();
+    
+            console.log("stakedNFTs", stakedNFTs);
+            const stakedNFT = stakedNFTs.find(nft => nft.tokenId.toString() === mintId.toString());
+             let converCLaim ;
+             let formattedStakeTime = null;
+            if (stakedNFT) {
+                converCLaim = Number(stakedNFT.rewardsClaimed) / 1e18;
+                const stakeTimeInSeconds = Number(stakedNFT.stakeTime);
+                formattedStakeTime = new Date(stakeTimeInSeconds * 1000).toLocaleString(); 
+                console.log("Matching staked NFT found:", stakedNFT);
+            } else {
+                console.log("No matching staked NFT found for mintId:", mintId);
+            }
+    
             const response = await fetch(tokenURI);
             const metadata = await response.json();
-            // const price = Number(getListing.price) / 1e18;
 
             return {
                 image: metadata.image,
                 mintId: Number(mintId),
                 isStaked: isStaked,
-                // buyerAddress: getListing.buyer,
-                // price: Number(getListing.price),
-                // sold: getListing.sold,
-                // paymentToken: getListing.paymentToken,
-                // seller: getListing.seller,
-                // isListed: getListing.isListed,
-                // convertPrice: price.toFixed(2),
+                stakedData: stakedNFT ? {
+                    user: stakedNFT.user,
+                    stakeTime: formattedStakeTime,
+                    isStaked: stakedNFT.isStaked,
+                    isRewardClaimed: stakedNFT.isRewardClaimed,
+                    nftType: Number(stakedNFT.nftType),
+                    rewardsClaimed: converCLaim.toFixed(2)
+                } : null,
             };
         } catch (error) {
             console.error(`Error fetching data for mintId ${mintId}:`, error);
             return null;
         }
     };
+    
     const getNFT = async () => {
         try {
             if (walletAddress) {
@@ -197,46 +211,6 @@ export default function Staking() {
             setLoading(false);
         }
     };
-
-    // const getNFT = async () => {
-    //     try {
-    //         setLoading(true);
-    //         const bscTestnetUrl =
-    //             "https://bsc-testnet.public.blastapi.io";
-    //         const web3 = new Web3(
-    //             new Web3.providers.HttpProvider(bscTestnetUrl)
-    //         );
-    //         const marketplace_Contract = new web3.eth.Contract(
-    //             ERC721ContractAbi,
-    //             ERC721MarketplaceAddress
-    //         );
-    //         const rabbitNFT_Contract = new web3.eth.Contract(
-    //             rabbitNFTAbi,
-    //             rabbitNFTAddress
-    //         );
-    //         const owner = await rabbitNFT_Contract.methods.owner().call();
-    //         setOwnerAddress(owner);
-
-    //         const usdtToken = await marketplace_Contract.methods
-    //             .usdtToken()
-    //             .call();
-    //         setUsdtToken(usdtToken);
-    // const addressArray = [walletAddress,NFTStakingAddress]
-    //         const walletOfOwner = await rabbitNFT_Contract.methods
-    //             .walletOfOwner(NFTStakingAddress)
-    //             .call();
-    //         let nftData = await fetchWithLimit(walletOfOwner, 5);
-    //         nftData = nftData
-    //             .filter((item) => item !== null)
-    //             .sort((a, b) => a.mintId - b.mintId);
-
-    //         setAllNft(nftData);
-    //     } catch (e) {
-    //         console.log("Error fetching NFTs:", e);
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
 
     const indexOfLastNFT = currentPage * nftsPerPage;
     const indexOfFirstNFT = indexOfLastNFT - nftsPerPage;
@@ -328,6 +302,9 @@ export default function Staking() {
             setInstakeLoading(null);
         }
     };
+    const handleDetails = (data)=>{
+        setOpenModal(true)
+    }
     useEffect(() => {
         getNFT();
     }, [walletAddress]);
@@ -473,7 +450,9 @@ export default function Staking() {
                                                                 </button>
                                                             </div>
                                                             <div className=" m-2 flex justify-center">
-                                                                <button className="relative mt-2 w-32 cursor-pointer font-semibold  text-center py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg">
+                                                                <button className="relative mt-2 w-32 cursor-pointer font-semibold  text-center py-2 bg-[#d459b6] hover:bg-[#e647bf] text-white rounded-lg" 
+                                                                onClick={()=>handleDetails(data)}
+                                                                >
                                                                     see detail
                                                                 </button>
                                                             </div>
