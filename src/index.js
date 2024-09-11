@@ -9,7 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
   import { createWeb3Modal, defaultWagmiConfig } from "@web3modal/wagmi/react";
   import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { WagmiConfig } from "wagmi";
+import { WagmiProvider } from "wagmi";
 import { bscTestnet } from "wagmi/chains";
 
 // Replace this project ID with yours
@@ -36,12 +36,12 @@ createWeb3Modal({
 });
 ReactDOM.render(
   <React.StrictMode>
+  <WagmiProvider config={wagmiConfig}>
     <QueryClientProvider client={queryClient}>
-  <WagmiConfig config={wagmiConfig}>
     <App />
     <ToastContainer autoClose={3000} />
-  </WagmiConfig>
   </QueryClientProvider>
+  </WagmiProvider>
 </React.StrictMode>,
   document.getElementById('root')
 );

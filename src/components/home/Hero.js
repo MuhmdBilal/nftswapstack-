@@ -41,7 +41,7 @@ export default function Hero() {
             </button>
           </Link>
 
-          <Link to={"/"} className='w-full sm:w-auto'>
+          <Link to={"/market-place"} className='w-full sm:w-auto'>
             <button className=" px-4 w-full sm:w-auto md:px-3 text-[12px] md:text-sm border-[1px] border-[white]/30 rounded-lg py-2  md:py-[13px]  transition-all duration-300 text-white font-semibold bg-[#d140ad]/10 hover:bg-[#e647bf]/30 ">
               Explore NFTs
             </button>

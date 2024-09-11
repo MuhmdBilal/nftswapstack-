@@ -419,7 +419,7 @@ export default function Team() {
                                                               data.seller
                                                                 ? "Delist "
                                                                 : " Buy NFT"
-                                                            : "Sell"}
+                                                            : "Buy"}
                                                     </>
                                                 )}
                                             </button>
