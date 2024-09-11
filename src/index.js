@@ -11,9 +11,6 @@ import { ToastContainer, toast } from 'react-toastify';
   import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider } from "wagmi";
 import { bscTestnet } from "wagmi/chains";
-
-// Replace this project ID with yours
-// from cloud.walletconnect.com
 const projectId = "2a2a5978a58aad734d13a2d194ec469a";
 
 const chains = [bscTestnet];
@@ -21,9 +18,12 @@ const queryClient = new QueryClient();
 const wagmiConfig = defaultWagmiConfig({
   projectId,
   chains,
-  // metadata: {
-  //   name: "test",
-  // },
+  auth: {
+    email: false,
+    socials: [],
+    // showWallets: true,
+    // walletFeatures: true
+  }
 });
 
 createWeb3Modal({
