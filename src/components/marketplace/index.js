@@ -121,7 +121,14 @@ export default function Team() {
             const response = await fetch(tokenURI);
             const metadata = await response.json();
             const price = Number(getListing.price) / 1e18;
-
+             let nftType = '';
+        if (mintId >= 1 && mintId <= 500) {
+            nftType = "Rare";
+        } else if (mintId >= 501 && mintId <= 800) {
+            nftType = "Epic";
+        } else if (mintId >= 801 && mintId <= 1000) {
+            nftType = "Legendary";
+        }
             return {
                 image: metadata.image,
                 mintId: Number(mintId),
@@ -132,6 +139,7 @@ export default function Team() {
                 seller: getListing.seller,
                 isListed: getListing.isListed,
                 convertPrice: price.toFixed(2),
+                nftType: nftType
             };
         } catch (error) {
             console.error(`Error fetching data for mintId ${mintId}:`, error);
@@ -329,7 +337,8 @@ export default function Team() {
     useEffect(() => {
         getNFT();
     }, []);
-
+  console.log("currentNFTs", currentNFTs);
+  
     return (
         <div className="flex items-center justify-center homeFontNormal">
             <div className="overflow-hidden bg-[#1D0729] py-48 flex flex-col items-center justify-center w-full  px-3  ">
@@ -386,8 +395,8 @@ export default function Team() {
                                                 className="relative z-10 px-2  py-2 bg-[#c04ea4] flex w-full items-center justify-between  text-white rounded-lg"
                                             >
                                                 <div>
-                                                    <h6 className="text-[#fcfcfc] font-semibold mb-1">Type</h6>
-                                                    <h6 className="font-mono text-sm font-bold text-[#44134e]/90 ">950.2</h6>
+                                                    <h6 className="text-[#fcfcfc] font-semibold mb-1">{data?.nftType}</h6>
+                                                    <h6 className="font-mono text-sm font-bold text-[#44134e]/90 ">{data?.convertPrice} RBT</h6>
                                                 </div>
 
                                                 <button
