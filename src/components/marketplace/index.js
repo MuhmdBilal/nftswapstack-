@@ -351,7 +351,7 @@ export default function Team() {
                     providing higher rewards.
                 </p>
                 <div className="flex  w-full flex-wrap items-center justify-center px-2 py-6 bg-[#e647bf]/10 rounded-lg gap-x-5 gap-y-16 flex-row">
-                    {false ? (
+                    {loading ? (
                         <div className="flex justify-center w-full mt-24 mb-24">
                             <div role="status">
                                 <svg
