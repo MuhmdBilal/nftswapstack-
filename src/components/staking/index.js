@@ -358,9 +358,9 @@ export default function Staking() {
                                                         className="object-cover transition-transform duration-300 transform sm:h-[280px] sm:w-[220px] md:h-[300px] lg:w-[260px] lg:h-[300px] w-[300px] h-[300px] md:w-[240px] group-hover:scale-125 "
                                                     />
                                                     {/* Mint ID box */}
-                                                    <div className="absolute top-2 right-2 bg-white border border-gray-300 rounded-lg px-2 py-1 text-md text-gray-800 shadow-md flex align-center">
+                                                    {/* <div className="absolute top-2 right-2 bg-white border border-gray-300 rounded-lg px-2 py-1 text-md text-gray-800 shadow-md flex align-center">
                                                         Id: {data.mintId}
-                                                    </div>
+                                                    </div> */}
                                                     {data.isStaked ? (
                                                         <>
                                                             <div className=" m-2 flex justify-around">

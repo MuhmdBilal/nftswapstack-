@@ -19,7 +19,7 @@ export default function Footer() {
 
           <div className="flex flex-col items-center justify-center gap-y-1 font-semibold text-[16px] md:text-[18px] lg:flex-row gap-x-3">
           <Link to="/"
-            
+             onCLick={()=>window.scroll(0,0)}
               className="no-underline text-white/90 hover:no-underline hover:text-[#e647bf] transition-all "
             >
               Home
@@ -49,22 +49,24 @@ export default function Footer() {
             <h6 className="text-lg font-bold text-center md:text-2xl ">Stay Connected</h6>
             <div className="flex flex-wrap items-center mt-1 gap-x-3 gap-y-4">
              
-              <AiFillInstagram
+              {/* <AiFillInstagram
                 size={40}
                 className="p-2 border-[1px] border-[#e647bf] hover:text-[#e647bf] transition duration-300  cursor-pointer rounded-full "
-              />
+              /> */}
               <a href="https://t.me/therabbitsnetwork" target="_blank"><FaTelegramPlane
                 size={40}
                 className="p-2 hover:text-[#e647bf] transition duration-300  border-[1px] border-[#e647bf]  cursor-pointer rounded-full "
               /></a>
+              <a href="https://x.com/RABBITSNETWORK?t=8mTQB3Ey5ZL2_O9zXVqCNA&s=09" target="_blank">
               <FaTwitter
                 size={40}
                 className="p-2 hover:text-[#e647bf] transition duration-300  border-[1px] border-[#e647bf]  cursor-pointer rounded-full "
               />
-              <FaDiscord
+              </a>
+              {/* <FaDiscord
                 size={40}
                 className="p-2 border-[1px] border-[#e647bf]  cursor-pointer hover:text-[#e647bf] transition duration-300  rounded-full "
-              />
+              /> */}
               <a target="_blank" href="https://www.facebook.com/profile.php?id=61564441334055&mibextid=ZbWKwL"><FaFacebookF
                 size={40}
                 className={` p-2 border-[1px] border-[#e647bf] hover:text-[#e647bf] transition duration-300 cursor-pointer rounded-full `}
