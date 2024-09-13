@@ -1,4 +1,4 @@
-export const NFTStakingAddress = "0x2d9177D6fA288016907f19d693D09FCbBa6C118F";
+export const NFTStakingAddress = "0x5CcAA50cEfAdB7C6760Eaa338D975b64321cb0e9";
 export const NFTStakingAbi = [
     {
         inputs: [
@@ -273,6 +273,19 @@ export const NFTStakingAbi = [
     {
         inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
         name: "unstakeNFT",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "uint256",
+                name: "_baserewardPerDay",
+                type: "uint256",
+            },
+        ],
+        name: "updateBaseReward",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function",

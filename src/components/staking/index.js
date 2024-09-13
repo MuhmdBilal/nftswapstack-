@@ -108,7 +108,7 @@ export default function Staking() {
     };
     const fetchDataForMintId = async (mintId) => {
         try {
-            const bscTestnetUrl = "https://bsc-testnet.public.blastapi.io";
+            const bscTestnetUrl = "https://binance.llamarpc.com";
             const web3 = new Web3(
                 new Web3.providers.HttpProvider(bscTestnetUrl)
             );
@@ -165,7 +165,7 @@ export default function Staking() {
         try {
             if (walletAddress) {
                 setLoading(true);
-                const bscTestnetUrl = "https://bsc-testnet.public.blastapi.io";
+                const bscTestnetUrl = "https://binance.llamarpc.com";
                 const web3 = new Web3(
                     new Web3.providers.HttpProvider(bscTestnetUrl)
                 );

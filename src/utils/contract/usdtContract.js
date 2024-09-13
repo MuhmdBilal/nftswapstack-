@@ -1,4 +1,4 @@
-export const BEP40TokenAddress = "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd";
+export const BEP40TokenAddress = "0x55d398326f99059fF775485246999027B3197955";
 export const EP40TokenAbi = [
     {
         inputs: [],
@@ -136,10 +136,19 @@ export const EP40TokenAbi = [
         type: "function",
     },
     {
+        constant: false,
+        inputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
+        name: "burn",
+        outputs: [{ internalType: "bool", name: "", type: "bool" }],
+        payable: false,
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
         constant: true,
         inputs: [],
         name: "decimals",
-        outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        outputs: [{ internalType: "uint8", name: "", type: "uint8" }],
         payable: false,
         stateMutability: "view",
         type: "function",

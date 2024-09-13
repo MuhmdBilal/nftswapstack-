@@ -100,7 +100,7 @@ export default function Team() {
         
         try {
             const bscTestnetUrl =
-                "https://bsc-testnet.public.blastapi.io";
+                "https://binance.llamarpc.com";
             const web3 = new Web3(
                 new Web3.providers.HttpProvider(bscTestnetUrl)
             );
@@ -151,7 +151,7 @@ export default function Team() {
         try {
             setLoading(true);
             const bscTestnetUrl =
-                "https://bsc-testnet.public.blastapi.io";
+                "https://binance.llamarpc.com";
             const web3 = new Web3(
                 new Web3.providers.HttpProvider(bscTestnetUrl)
             );
@@ -439,7 +439,7 @@ export default function Team() {
                                                               data.seller
                                                                 ? "Delist "
                                                                 : " Buy NFT"
-                                                            : "Buy"}
+                                                            : "Sell"}
                                                     </>
                                                 )}
                                             </button>

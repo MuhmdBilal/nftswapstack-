@@ -1,4 +1,4 @@
-export const rabbitTokenAddress = "0x330B19a155852bc6cF8d6dEe6011a9a7803721b3";
+export const rabbitTokenAddress = "0x6D5849057a813D7FdA9E9cDAfC8167afEA8ed213";
 export const rabbitTokenAbi = [
     {
         inputs: [
@@ -186,6 +186,13 @@ export const rabbitTokenAbi = [
         inputs: [{ internalType: "address", name: "account", type: "address" }],
         name: "balanceOf",
         outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "burningWallet",
+        outputs: [{ internalType: "address", name: "", type: "address" }],
         stateMutability: "view",
         type: "function",
     },

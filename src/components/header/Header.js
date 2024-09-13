@@ -14,7 +14,7 @@ import {
 import { AuthUserContext } from "../../context";
 const Header = () => {
     // const web3 = new Web3(window.ethereum);
-    const bscTestnetUrl = "https://bsc-testnet.public.blastapi.io";
+    const bscTestnetUrl = "https://binance.llamarpc.com";
     const web3 = new Web3(new Web3.providers.HttpProvider(bscTestnetUrl, {timeout: 10000}));
 
 

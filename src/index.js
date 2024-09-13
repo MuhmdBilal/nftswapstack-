@@ -8,10 +8,10 @@ import { ToastContainer, toast } from 'react-toastify';
   import { createWeb3Modal, defaultWagmiConfig } from "@web3modal/wagmi/react";
   import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider } from "wagmi";
-import { bscTestnet } from "wagmi/chains";
+import { bsc } from "wagmi/chains";
 const projectId = "e4a6242bade4a887be47b8ec368c958c";
 
-const chains = [bscTestnet];
+const chains = [bsc];
 const queryClient = new QueryClient();
 const metadata = {
   name: 'AppKit',

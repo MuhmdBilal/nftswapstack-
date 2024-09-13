@@ -1,4 +1,4 @@
-export const rabbitNFTAddress = "0x576BDA518CA2332C61f5BA429daB0CeBc496438A";
+export const rabbitNFTAddress = "0x0472B5bFbAFe951E71a9e83b199A553b088dbb1a";
 export const rabbitNFTAbi = [
     { inputs: [], stateMutability: "nonpayable", type: "constructor" },
     {

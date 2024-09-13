@@ -1,5 +1,5 @@
 export const ERC721MarketplaceAddress =
-    "0xa7d53bcA5B43D1CDfd7943da7c5785b600b719f4";
+    "0x87cb4087D5e6B8693E03c6b3981F53eE11B7BF84";
 export const ERC721ContractAbi = [
     {
         inputs: [
@@ -252,6 +252,27 @@ export const ERC721ContractAbi = [
     {
         inputs: [],
         name: "renounceOwnership",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
+        inputs: [
+            { internalType: "address", name: "erc721Address", type: "address" },
+            { internalType: "uint256", name: "tokenId", type: "uint256" },
+        ],
+        name: "rescueNFT",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
+        inputs: [
+            { internalType: "address", name: "tokenAddress", type: "address" },
+            { internalType: "address", name: "receiver", type: "address" },
+            { internalType: "uint256", name: "amount", type: "uint256" },
+        ],
+        name: "rescueToken",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function",
