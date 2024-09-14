@@ -1,4 +1,4 @@
-export const rabbitTokenAddress = "0x6D5849057a813D7FdA9E9cDAfC8167afEA8ed213";
+export const rabbitTokenAddress = "0x5899B9aEB098bC3835F1Dc2e34D6813b79cee9A9";
 export const rabbitTokenAbi = [
     {
         inputs: [
@@ -115,6 +115,31 @@ export const rabbitTokenAbi = [
         anonymous: false,
         inputs: [
             {
+                indexed: false,
+                internalType: "uint256",
+                name: "buyTax",
+                type: "uint256",
+            },
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "holdersTax",
+                type: "uint256",
+            },
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "marketingTax",
+                type: "uint256",
+            },
+        ],
+        name: "BuyTaxUpdated",
+        type: "event",
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
                 indexed: true,
                 internalType: "address",
                 name: "previousOwner",
@@ -128,6 +153,37 @@ export const rabbitTokenAbi = [
             },
         ],
         name: "OwnershipTransferred",
+        type: "event",
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "sellTax",
+                type: "uint256",
+            },
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "holdersTax",
+                type: "uint256",
+            },
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "marketingTax",
+                type: "uint256",
+            },
+            {
+                indexed: false,
+                internalType: "uint256",
+                name: "buybackTax",
+                type: "uint256",
+            },
+        ],
+        name: "SellTaxUpdated",
         type: "event",
     },
     {
@@ -228,9 +284,32 @@ export const rabbitTokenAbi = [
         type: "function",
     },
     {
+        inputs: [],
+        name: "getBuyTax",
+        outputs: [
+            { internalType: "uint256", name: "", type: "uint256" },
+            { internalType: "uint256", name: "", type: "uint256" },
+            { internalType: "uint256", name: "", type: "uint256" },
+        ],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
         inputs: [{ internalType: "address", name: "account", type: "address" }],
         name: "getRewardBalance",
         outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "getSellTax",
+        outputs: [
+            { internalType: "uint256", name: "", type: "uint256" },
+            { internalType: "uint256", name: "", type: "uint256" },
+            { internalType: "uint256", name: "", type: "uint256" },
+            { internalType: "uint256", name: "", type: "uint256" },
+        ],
         stateMutability: "view",
         type: "function",
     },
@@ -356,6 +435,47 @@ export const rabbitTokenAbi = [
             },
         ],
         stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "uint256",
+                name: "buyTaxToHolders",
+                type: "uint256",
+            },
+            {
+                internalType: "uint256",
+                name: "buyTaxToMarketing",
+                type: "uint256",
+            },
+        ],
+        name: "updateBuyTax",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+    },
+    {
+        inputs: [
+            {
+                internalType: "uint256",
+                name: "sellTaxToHolders",
+                type: "uint256",
+            },
+            {
+                internalType: "uint256",
+                name: "sellTaxToMarketing",
+                type: "uint256",
+            },
+            {
+                internalType: "uint256",
+                name: "sellTaxToBuyback",
+                type: "uint256",
+            },
+        ],
+        name: "updateSellTax",
+        outputs: [],
+        stateMutability: "nonpayable",
         type: "function",
     },
     {
